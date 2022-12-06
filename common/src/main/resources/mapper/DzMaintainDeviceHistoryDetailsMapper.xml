@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzMaintainDeviceHistoryDetailsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzMaintainDeviceHistoryDetails">
+        <id column="details_id" property="detailsId" />
+        <result column="maintain_history_id" property="maintainHistoryId" />
+        <result column="maintain_item" property="maintainItem" />
+        <result column="maintain_content" property="maintainContent" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        details_id, maintain_history_id, maintain_item, maintain_content, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+
+</mapper>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzToolCompensationDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzToolCompensationData">
+        <id column="id" property="id" />
+        <result column="equipment_id" property="equipmentId" />
+        <result column="group_no" property="groupNo" />
+        <result column="tool_no" property="toolNo" />
+        <result column="tool_life" property="toolLife" />
+        <result column="tool_life_counter" property="toolLifeCounter" />
+        <result column="tool_life_counter_type" property="toolLifeCounterType" />
+        <result column="tool_geometry_x" property="toolGeometryX" />
+        <result column="tool_geometry_y" property="toolGeometryY" />
+        <result column="tool_geometry_z" property="toolGeometryZ" />
+        <result column="tool_geometry_c" property="toolGeometryC" />
+        <result column="tool_geometry_radius" property="toolGeometryRadius" />
+        <result column="tool_wear_x" property="toolWearX" />
+        <result column="tool_wear_y" property="toolWearY" />
+        <result column="tool_wear_z" property="toolWearZ" />
+        <result column="tool_wear_c" property="toolWearC" />
+        <result column="tool_wear_radius" property="toolWearRadius" />
+        <result column="tool_nose_direction" property="toolNoseDirection" />
+        <result column="description" property="description" />
+        <result column="org_code" property="orgCode" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+        <result column="order_id" property="orderId" />
+        <result column="line_id" property="lineId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, equipment_id, group_no, tool_no, tool_life, tool_life_counter, tool_life_counter_type, tool_geometry_x, tool_geometry_y, tool_geometry_z, tool_geometry_c, tool_geometry_radius, tool_wear_x, tool_wear_y, tool_wear_z, tool_wear_c, tool_wear_radius, tool_nose_direction, description, org_code, create_by, create_time, update_by, update_time,order_id,line_id
+    </sql>
+    <update id="updateByToolNo">
+        update dz_tool_compensation_data
+        set tool_no=#{newToolNo}
+        where group_no=#{groupNo}
+        and tool_no=#{toolNo}
+    </update>
+    <select id="getToolCompensationDataByToolInfo" resultType="java.lang.Long">
+        select
+        COUNT(id)
+        from dz_tool_compensation_data
+        where group_no=#{groupNo}
+        and tool_no=#{toolNo}
+        and equipment_id!=null
+
+    </select>
+    <select id="getToolConfigureList" resultType="com.dzics.common.model.entity.DzToolCompensationData">
+        select  * from ( select
+        eq.equipment_no as equipmentNo,
+        tcd.id,
+        tcd.equipment_id as equipmentId,
+        tcd.group_no as groupNo,
+        tcd.tool_no as toolNo,
+        tcd.create_time as createTime
+        from dz_tool_compensation_data tcd
+        left join dz_equipment eq on tcd.equipment_id=eq.id
+        where tcd.equipment_id  is not null
+        <if test="orgCode!=null">
+            and tcd.org_code=#{orgCode}
+        </if>
+        <if test="groupNo!=null">
+            and tcd.group_no=#{groupNo}
+        </if>
+        ) as temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+    <select id="getToolInfoDataList" resultType="com.dzics.common.model.response.GetToolInfoDataListDo">
+        select  * from (   select
+        tcd.id,
+        tcd.equipment_id,
+        tcd.group_no,
+        tcd.tool_no,
+        tcd.tool_life,
+        tcd.tool_life_counter,
+        tcd.tool_life_counter_type,
+        tcd.tool_geometry_x,
+        tcd.tool_geometry_y,
+        tcd.tool_geometry_z,
+        tcd.tool_geometry_c,
+        tcd.tool_geometry_radius,
+        tcd.tool_wear_x,
+        tcd.tool_wear_y,
+        tcd.tool_wear_z,
+        tcd.tool_wear_c,
+        tcd.tool_wear_radius,
+        tcd.tool_nose_direction,
+        tcd.description,
+        tcd.org_code,
+        tcd.create_by,
+        tcd.create_time,
+        tcd.update_by,
+        tcd.update_time,
+        tcd.order_id,
+        tcd.line_id,
+        eq.equipment_no,
+        line.line_name,
+        ord.order_no
+        from dz_tool_compensation_data tcd
+        LEFT JOIN dz_equipment eq on tcd.equipment_id=eq.id
+        LEFT JOIN dz_production_line line on eq.line_id=line.id
+        LEFT JOIN dz_order ord on line.order_id=ord.id
+        where 1=1
+        <if test="orgCode!=null">
+            and tcd.org_code=#{orgCode}
+        </if>
+        <if test="lineId!=null and lineId!=''">
+            and tcd.line_id=#{lineId}
+        </if>
+        <if test="equipmentNo!=null">
+            and eq.equipment_no like concat('%',#{equipmentNo},'%')
+        </if>
+        <if test="groupNo!=null">
+            and tcd.group_no=#{groupNo}
+        </if>
+        ) as temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+    <select id="getEqIds" resultType="java.lang.Long">
+      SELECT tcd.equipment_id
+      FROM dz_tool_compensation_data tcd
+      GROUP BY tcd.equipment_id
+    </select>
+
+</mapper>

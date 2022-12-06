@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.IotSendDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.IotSendData">
+        <id column="id" property="id" />
+        <result column="TCode" property="tcode" />
+        <result column="SpinLoad1" property="spinload1" />
+        <result column="ActSpin" property="actspin" />
+        <result column="ActFeed" property="actfeed" />
+        <result column="MainPgm" property="mainpgm" />
+        <result column="CurPgm" property="curpgm" />
+        <result column="CurSeq" property="curseq" />
+        <result column="workState" property="workstate" />
+        <result column="equipmentId" property="equipmentid" />
+        <result column="deviceId" property="deviceid" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, TCode, SpinLoad1, ActSpin, ActFeed, MainPgm, CurPgm, CurSeq, workState, equipmentId, deviceId, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+
+</mapper>

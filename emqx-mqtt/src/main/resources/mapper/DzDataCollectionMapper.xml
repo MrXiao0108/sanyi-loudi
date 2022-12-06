@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.mqtt.dao.DzDataCollectionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzDataCollection">
+        <id column="id" property="id" />
+        <result column="device_id" property="deviceId" />
+        <result column="A148" property="a148" />
+        <result column="B561" property="b561" />
+        <result column="A561" property="a561" />
+        <result column="B565" property="b565" />
+        <result column="A562" property="a562" />
+        <result column="B501" property="b501" />
+        <result column="A502" property="a502" />
+        <result column="B502" property="b502" />
+        <result column="B562" property="b562" />
+        <result column="A563" property="a563" />
+        <result column="B568" property="b568" />
+        <result column="A565" property="a565" />
+        <result column="B569" property="b569" />
+        <result column="A566" property="a566" />
+        <result column="B802" property="b802" />
+        <result column="A803" property="a803" />
+        <result column="A805" property="a805" />
+        <result column="A806" property="a806" />
+        <result column="B810" property="b810" />
+        <result column="A810" property="a810" />
+        <result column="A809" property="a809" />
+        <result column="A812" property="a812" />
+        <result column="A802" property="a802" />
+        <result column="A521" property="a521" />
+        <result column="B541" property="b541" />
+        <result column="B551" property="b551" />
+        <result column="A813" property="a813" />
+        <result column="B804" property="b804" />
+        <result column="B803" property="b803" />
+        <result column="A815" property="a815" />
+        <result column="A814" property="a814" />
+        <result column="A591" property="a591" />
+        <result column="A592" property="a592" />
+        <result column="A593" property="a593" />
+        <result column="A594" property="a594" />
+        <result column="A595" property="a595" />
+        <result column="A620" property="a620" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, device_id, A148, B561, A561, B565, A562, B501, A502, B502, B562, A563, B568, A565, B569, A566, B802, A803, A805, A806, B810, A810, A809, A812, A802, A521, B541, B551, A813, B804, B803, A815, A814, A591, A592, A593, A594, A595, A620, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+
+</mapper>

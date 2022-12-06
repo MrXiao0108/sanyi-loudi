@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzEquipmentRunTimeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzEquipmentRunTime">
+        <id column="id" property="id"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="line_no" property="lineNo"/>
+        <result column="equipment_no" property="equipmentNo"/>
+        <result column="equipment_type" property="equipmentType"/>
+        <result column="stop_time" property="stopTime"/>
+        <result column="reset_time" property="resetTime"/>
+        <result column="duration" property="duration"/>
+        <result column="stop_data" property="stopData"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, order_no, line_no, equipment_no, equipment_type, stop_time, reset_time, duration, stop_data, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="getDayRunTime" resultType="java.lang.Long">
+       SELECT
+            SUM(duration)
+        FROM
+            `dz_equipment_run_time`
+        WHERE
+            equipment_no = #{equipmentNo}
+        AND equipment_type = #{equipmentType}
+        AND order_no = #{orderNo}
+        AND line_no = #{lineNo}
+        AND stop_data = #{nowDay}
+    </select>
+    <select id="getDayRunTimeIsRestNnull" resultType="java.lang.Long">
+         SELECT
+          SUM(TIMESTAMPDIFF(SECOND, stop_time, NOW()) * 1000) AS stopTime
+        FROM
+            `dz_equipment_run_time`
+        WHERE
+            equipment_no = #{equipmentNo}
+        AND equipment_type = #{equipmentType}
+         AND order_no = #{orderNo}
+        AND line_no = #{lineNo}
+        AND stop_data = #{nowDay}
+        AND reset_time IS NULL
+    </select>
+    <select id="getRunTimeAll" resultType="java.lang.Long">
+         SELECT
+            SUM(duration)
+        FROM
+            `dz_equipment_run_time`
+        WHERE
+            equipment_no = #{equipmentNo}
+        AND equipment_type = #{equipmentType}
+    </select>
+    <select id="getRunTimeIsRestNnull" resultType="java.lang.Long">
+         SELECT
+          SUM(TIMESTAMPDIFF(SECOND, stop_time, NOW()) * 1000) AS stopTime
+        FROM
+            `dz_equipment_run_time`
+        WHERE
+            equipment_no = #{equipmentNo}
+        AND equipment_type = #{equipmentType}
+        AND reset_time IS NULL
+    </select>
+    <select id="getDayRunTimeSum" resultType="java.lang.Long">
+         SELECT
+            SUM(duration)
+        FROM
+            `dz_equipment_run_time`
+        WHERE
+            equipment_no = #{equipmentNo}
+        AND equipment_type = #{equipmentType}
+        AND stop_data &gt;= #{startTime}
+        AND stop_data &lt;= #{endTime}
+    </select>
+    <select id="getDayRunTimeIsRestNnullSum" resultType="java.lang.Long">
+          SELECT
+          SUM(TIMESTAMPDIFF(SECOND, stop_time, NOW()) * 1000) AS stopTime
+        FROM
+            `dz_equipment_run_time`
+        WHERE
+            equipment_no = #{equipmentNo}
+        AND equipment_type = #{equipmentType}
+        AND stop_data &gt;= #{startTime}
+        AND stop_data &lt;= #{endTime}
+        AND reset_time IS NULL
+    </select>
+    <select id="getRunTime" resultType="java.util.Map">
+        SELECT
+        stop_time as stopTime,
+        reset_time as resetTime,
+        duration
+        FROM
+        `dz_equipment_run_time`
+        WHERE
+        equipment_no = #{equipmentNo,jdbcType=VARCHAR}
+        AND order_no = #{orderNo}
+        AND line_no = #{lineNo}
+        AND equipment_type = #{equipmentType,jdbcType=INTEGER}
+        AND stop_data =#{nowDate}
+    </select>
+    <select id="getDayRunTimeIsRestNnullSumOderNo" resultType="java.lang.Long">
+            SELECT
+               SUM(TIMESTAMPDIFF(SECOND, stop_time, NOW()) * 1000) AS stopTime
+            FROM
+                `dz_equipment_run_time`
+            WHERE
+                equipment_no = #{equipmentNo}
+            AND equipment_type = #{equipmentType}
+            AND stop_data &gt;= #{startTime}
+            AND stop_data &lt;= #{endTime}
+            AND order_no = #{orderNo}
+            AND line_no = #{lineNo}
+            AND reset_time IS NULL
+    </select>
+    <select id="getDayRunTimeSumOrderLine" resultType="java.lang.Long">
+         SELECT
+            SUM(duration)
+        FROM
+            `dz_equipment_run_time`
+        WHERE
+            equipment_no = #{equipmentNo}
+        AND equipment_type = #{equipmentType}
+        AND stop_data &gt;= #{startTime}
+        AND stop_data &lt;= #{endTime}
+        AND order_no = #{orderNo}
+        AND line_no = #{lineNo}
+    </select>
+
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzWorkingFlowBigMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzWorkingFlowBig">
+        <id column="process_flow_big_id" property="processFlowBigId" />
+        <result column="qr_code" property="qrCode" />
+        <result column="work_time" property="workTime" />
+        <result column="work_date" property="workDate" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        process_flow_big_id, qr_code, , work_time, work_date, create_time
+    </sql>
+    <select id="getInitFlowBig" resultType="com.dzics.common.model.entity.DzWorkingFlowBig">
+       SELECT
+            big.process_flow_big_id AS processFlowBigId,
+            big.qr_code AS qrCode,
+            flo.line_id AS lineId,
+            flo.order_id AS orderId
+        FROM
+            `dz_working_flow_big` AS big
+        LEFT JOIN (
+            SELECT
+                qr_code,
+                line_id,
+                order_id
+            FROM
+                dz_working_flow
+            GROUP BY
+                qr_code,
+                line_id,
+                order_id
+        ) AS flo ON big.qr_code = flo.qr_code
+    </select>
+
+</mapper>

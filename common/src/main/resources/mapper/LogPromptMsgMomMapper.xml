@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.LogPromptMsgMomMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.LogPromptMsgMom">
+        <id column="log_id" property="logId" />
+        <result column="req_type" property="reqType" />
+        <result column="group_id" property="groupId" />
+        <result column="order_no" property="orderNo" />
+        <result column="line_no" property="lineNo" />
+        <result column="grade" property="grade" />
+        <result column="brief" property="brief" />
+        <result column="details" property="details" />
+        <result column="invok_method" property="invokMethod" />
+        <result column="invok_return" property="invokReturn" />
+        <result column="invok_parm" property="invokParm" />
+        <result column="invok_point_model" property="invokPointModel" />
+        <result column="point_code" property="pointCode" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="invok_cost" property="invokCost" />
+        <result column="invok_status" property="invokStatus" />
+        <result column="create_date" property="createDate" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        log_id, req_type, group_id, order_no, line_no, grade, brief, details, invok_method, invok_return, invok_parm, invok_point_model, point_code, start_time, end_time, invok_cost, invok_status, create_date, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+
+    <select id="getBackMonLog" resultType="com.dzics.common.model.response.mom.BackMomLogDo">
+        SELECT * from
+        (
+            SELECT
+            mm.log_id AS logId,
+            mm.order_no AS orderNo,
+            od.line_name AS lineName,
+            mm.details AS details,
+            mm.invok_parm AS InvokParm,
+            mm.invok_return AS InvokReturn,
+            mm.start_time AS StartTime,
+            mm.invok_cost AS InvokCost
+            FROM
+            `log_prompt_msg_mom` AS mm
+            LEFT JOIN dz_production_line AS od ON mm.order_no = od.order_no
+            WHERE 1 = 1
+            <if test=" orderNo!=null and orderNo!='' ">
+                and mm.order_no = #{orderNo}
+            </if>
+            <if test=" lineNo!=null and lineNo!='' ">
+                and mm.line_no = #{lineNo}
+            </if>
+            <if test=" logType!=null and logType!='' ">
+                AND mm.details = #{logType}
+            </if>
+<!--            防止查询数据量太大影响效率-->
+            <if test="(beginTime==null or beginTime=='') and (endTime==null or endTime=='')">
+                and mm.create_date = CURDATE()
+            </if>
+            <if test=" beginTime!=null and beginTime!='' ">
+                and mm.start_time &gt;= #{beginTime}
+            </if>
+            <if test=" endTime!=null and endTime!='' ">
+                and mm.end_time &lt;= #{endTime}
+            </if>
+            <if test=" crux!=null and crux!='' ">
+                and mm.invok_parm like concat('%',#{crux,jdbcType=VARCHAR},'%')
+            </if>
+        ) as temp
+        <if test=" field!=null and field!='' ">
+            ORDER BY temp.${field}  ${type}
+        </if>
+    </select>
+
+    <select id="getMomLogExcel" resultType="com.dzics.common.model.response.mom.MomLogExcelDo">
+        SELECT
+            lg.details as details,
+            lg.wip_order_no as wipOrderNo,
+            lg.point_code as pointCode,
+            lg.invok_status as invokStatus,
+            lg.invok_return as abnormal,
+            lgm.invok_parm as invokParm,
+            lgm.invok_return as invokReturn,
+            lg.start_time as startTime,
+            lg.end_time as endTime,
+            lg.invok_cost as invokCost,
+            lg.create_date as createDate
+        FROM
+            log_prompt_msg AS lg
+        LEFT JOIN dz_production_line AS line ON line.order_no = lg.order_no
+        LEFT JOIN log_prompt_msg_mom AS lgm ON lg.group_id = lgm.group_id
+        WHERE 1 = 1
+        <if test="orderNo!=null and orderNo!=''">
+            AND lg.order_no = #{orderNo}
+        </if>
+        <if test="wipOrderNo!=null and wipOrderNo!=''">
+            AND lg.wip_order_no = #{wipOrderNo}
+        </if>
+        <if test="createDate!=null and createDate!=''">
+            AND lg.create_date = #{createDate}
+        </if>
+        <if test="pointCode!=null and pointCode!=''">
+            AND lg.point_code = #{pointCode}
+        </if>
+        <if test="brief!=null and brief!=''">
+            AND lg.brief = #{brief}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            AND lg.start_time = #{startTime}
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND lg.end_time = #{endTime}
+        </if>
+    </select>
+
+    <select id="getMomLogs" resultType="com.dzics.common.model.dto.check.LogPromptMsgDto">
+        SELECT
+        msg.log_id as 'logId',
+        msg.handle as 'handle',
+        msg.req_type as 'reqType',
+        msg.group_id as 'groupId',
+        msg.invok_parm as 'invokParm',
+        msg.invok_method as 'invokMethod',
+        msg.invok_return as 'invokReturn',
+        msg.invok_point_model as 'invokPointModel',
+        msg.point_code as 'pointCode',
+        msg.start_time as 'startTime',
+        msg.end_time as 'endTime',
+        msg.invok_cost as 'invokCost',
+        msg.invok_status as 'invokStatus',
+        msg.order_no as 'orderNo',
+        msg.line_no as 'lineNo',
+        msg.errors_nums as 'errorsNums',
+        msg.grade as 'grade',
+        msg.brief as 'brief',
+        msg.details as 'details',
+        msg.create_date as 'createDate',
+        msg.org_code as 'orgCode',
+        msg.del_flag as 'delFlag',
+        msg.create_by as 'createBy',
+        msg.create_time as 'createTime',
+        msg.update_by as 'updateBy',
+        msg.update_time as 'updateTime',
+        msg.pro_task_order_id as 'proTaskOrderId',
+        msg.call_material_pro_task_order_id as 'callMaterialProTaskOrderId',
+        msg.wip_order_no as 'wipOrderNo',
+        msg.call_material_wip_order_no as 'callMaterialWipOrderNo'
+        FROM
+        log_prompt_msg AS msg
+        WHERE
+        1 = 1
+        <if test="orderNo!=null and orderNo!=''">
+            AND msg.order_no = #{orderNo}
+        </if>
+        <if test="wipOrderNo!=null and wipOrderNo!=''">
+            AND msg.wip_order_no = #{wipOrderNo}
+        </if>
+        <if test="pointCode!=null and pointCode!=''">
+            AND msg.point_code = #{pointCode}
+        </if>
+        <if test="brief!=null and brief!=''">
+            AND msg.brief = #{brief}
+        </if>
+        <if test="beginTime!=null and beginTime!=''">
+            AND msg.start_time &gt;= #{beginTime}
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND msg.end_time &lt;= #{endTime}
+        </if>
+        <if test="createDate!=null and createDate!=''">
+            AND msg.create_date = #{createDate}
+        </if>
+        <if test="(filed != null and filed !='') and (type!=null and type !='')">
+            ORDER BY #{filed} #{type}
+        </if>
+        <if test="filed==null || type==null">
+            ORDER BY msg.start_time desc
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzDataCollectionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzDataCollection">
+        <id column="id" property="id" />
+        <result column="device_id" property="deviceId" />
+        <result column="B401" property="b401" />
+        <result column="B402" property="b402" />
+        <result column="B403" property="b403" />
+        <result column="B404" property="b404" />
+        <result column="B405" property="b405" />
+        <result column="B406" property="b406" />
+        <result column="B501" property="b501" />
+        <result column="B502" property="b502" />
+        <result column="B503" property="b503" />
+        <result column="B504" property="b504" />
+        <result column="B505" property="b505" />
+        <result column="B521" property="b521" />
+        <result column="B522" property="b522" />
+        <result column="B523" property="b523" />
+        <result column="B524" property="b524" />
+        <result column="B525" property="b525" />
+        <result column="B526" property="b526" />
+        <result column="B527" property="b527" />
+        <result column="B541" property="b541" />
+        <result column="B542" property="b542" />
+        <result column="B543" property="b543" />
+        <result column="B544" property="b544" />
+        <result column="B545" property="b545" />
+        <result column="B546" property="b546" />
+        <result column="B550" property="b550" />
+        <result column="B551" property="b551" />
+        <result column="B552" property="b552" />
+        <result column="B553" property="b553" />
+        <result column="B554" property="b554" />
+        <result column="B555" property="b555" />
+        <result column="B556" property="b556" />
+        <result column="B557" property="b557" />
+        <result column="B561" property="b561" />
+        <result column="B562" property="b562" />
+        <result column="B563" property="b563" />
+        <result column="B564" property="b564" />
+        <result column="B565" property="b565" />
+        <result column="B566" property="b566" />
+        <result column="B567" property="b567" />
+        <result column="B568" property="b568" />
+        <result column="B569" property="b569" />
+        <result column="B570" property="b570" />
+        <result column="B571" property="b571" />
+        <result column="B572" property="b572" />
+        <result column="B591" property="b591" />
+        <result column="B592" property="b592" />
+        <result column="B593" property="b593" />
+        <result column="B594" property="b594" />
+        <result column="B595" property="b595" />
+        <result column="B596" property="b596" />
+        <result column="B597" property="b597" />
+        <result column="B651" property="b651" />
+        <result column="B691" property="b691" />
+        <result column="B692" property="b692" />
+        <result column="B693" property="b693" />
+        <result column="B694" property="b694" />
+        <result column="B801" property="b801" />
+        <result column="B802" property="b802" />
+        <result column="B803" property="b803" />
+        <result column="B804" property="b804" />
+        <result column="B805" property="b805" />
+        <result column="B806" property="b806" />
+        <result column="B807" property="b807" />
+        <result column="B808" property="b808" />
+        <result column="B809" property="b809" />
+        <result column="B810" property="b810" />
+        <result column="B811" property="b811" />
+        <result column="A148" property="a148" />
+        <result column="A501" property="a501" />
+        <result column="A502" property="a502" />
+        <result column="A503" property="a503" />
+        <result column="A504" property="a504" />
+        <result column="A521" property="a521" />
+        <result column="A541" property="a541" />
+        <result column="A561" property="a561" />
+        <result column="A562" property="a562" />
+        <result column="A563" property="a563" />
+        <result column="A564" property="a564" />
+        <result column="A565" property="a565" />
+        <result column="A566" property="a566" />
+        <result column="A591" property="a591" />
+        <result column="A592" property="a592" />
+        <result column="A593" property="a593" />
+        <result column="A594" property="a594" />
+        <result column="A595" property="a595" />
+        <result column="A620" property="a620" />
+        <result column="A801" property="a801" />
+        <result column="A802" property="a802" />
+        <result column="A803" property="a803" />
+        <result column="A804" property="a804" />
+        <result column="A805" property="a805" />
+        <result column="A806" property="a806" />
+        <result column="A807" property="a807" />
+        <result column="A808" property="a808" />
+        <result column="A809" property="a809" />
+        <result column="A810" property="a810" />
+        <result column="A811" property="a811" />
+        <result column="A812" property="a812" />
+        <result column="A813" property="a813" />
+        <result column="A814" property="a814" />
+        <result column="A815" property="a815" />
+        <result column="A816" property="a816" />
+        <result column="db401" property="db401" />
+        <result column="db402" property="db402" />
+        <result column="db403" property="db403" />
+        <result column="db404" property="db404" />
+        <result column="db405" property="db405" />
+        <result column="db406" property="db406" />
+        <result column="db501" property="db501" />
+        <result column="db502" property="db502" />
+        <result column="db503" property="db503" />
+        <result column="db504" property="db504" />
+        <result column="db505" property="db505" />
+        <result column="db521" property="db521" />
+        <result column="db522" property="db522" />
+        <result column="db523" property="db523" />
+        <result column="db524" property="db524" />
+        <result column="db525" property="db525" />
+        <result column="db526" property="db526" />
+        <result column="db527" property="db527" />
+        <result column="db541" property="db541" />
+        <result column="db542" property="db542" />
+        <result column="db543" property="db543" />
+        <result column="db544" property="db544" />
+        <result column="db545" property="db545" />
+        <result column="db546" property="db546" />
+        <result column="db550" property="db550" />
+        <result column="db551" property="db551" />
+        <result column="db552" property="db552" />
+        <result column="db553" property="db553" />
+        <result column="db554" property="db554" />
+        <result column="db555" property="db555" />
+        <result column="db556" property="db556" />
+        <result column="db557" property="db557" />
+        <result column="db561" property="db561" />
+        <result column="db562" property="db562" />
+        <result column="db563" property="db563" />
+        <result column="db564" property="db564" />
+        <result column="db565" property="db565" />
+        <result column="db566" property="db566" />
+        <result column="db567" property="db567" />
+        <result column="db568" property="db568" />
+        <result column="db569" property="db569" />
+        <result column="db570" property="db570" />
+        <result column="db571" property="db571" />
+        <result column="db572" property="db572" />
+        <result column="db591" property="db591" />
+        <result column="db592" property="db592" />
+        <result column="db593" property="db593" />
+        <result column="db594" property="db594" />
+        <result column="db595" property="db595" />
+        <result column="db596" property="db596" />
+        <result column="db597" property="db597" />
+        <result column="db651" property="db651" />
+        <result column="db691" property="db691" />
+        <result column="db692" property="db692" />
+        <result column="db693" property="db693" />
+        <result column="db694" property="db694" />
+        <result column="db801" property="db801" />
+        <result column="db802" property="db802" />
+        <result column="db803" property="db803" />
+        <result column="db804" property="db804" />
+        <result column="db805" property="db805" />
+        <result column="db806" property="db806" />
+        <result column="db807" property="db807" />
+        <result column="db808" property="db808" />
+        <result column="db809" property="db809" />
+        <result column="db810" property="db810" />
+        <result column="db811" property="db811" />
+        <result column="da148" property="da148" />
+        <result column="da501" property="da501" />
+        <result column="da502" property="da502" />
+        <result column="da503" property="da503" />
+        <result column="da504" property="da504" />
+        <result column="da521" property="da521" />
+        <result column="da541" property="da541" />
+        <result column="da561" property="da561" />
+        <result column="da562" property="da562" />
+        <result column="da563" property="da563" />
+        <result column="da564" property="da564" />
+        <result column="da565" property="da565" />
+        <result column="da566" property="da566" />
+        <result column="da591" property="da591" />
+        <result column="da592" property="da592" />
+        <result column="da593" property="da593" />
+        <result column="da594" property="da594" />
+        <result column="da595" property="da595" />
+        <result column="da620" property="da620" />
+        <result column="da801" property="da801" />
+        <result column="da802" property="da802" />
+        <result column="da803" property="da803" />
+        <result column="da804" property="da804" />
+        <result column="da805" property="da805" />
+        <result column="da806" property="da806" />
+        <result column="da807" property="da807" />
+        <result column="da808" property="da808" />
+        <result column="da809" property="da809" />
+        <result column="da810" property="da810" />
+        <result column="da811" property="da811" />
+        <result column="da812" property="da812" />
+        <result column="da813" property="da813" />
+        <result column="da814" property="da814" />
+        <result column="da815" property="da815" />
+        <result column="da816" property="da816" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, device_id, B401, B402, B403, B404, B405, B406, B501, B502, B503, B504, B505, B521, B522, B523, B524, B525, B526, B527, B541, B542, B543, B544, B545, B546, B550, B551, B552, B553, B554, B555, B556, B557, B561, B562, B563, B564, B565, B566, B567, B568, B569, B570, B571, B572, B591, B592, B593, B594, B595, B596, B597, B651, B691, B692, B693, B694, B801, B802, B803, B804, B805, B806, B807, B808, B809, B810, B811, A148, A501, A502, A503, A504, A521, A541, A561, A562, A563, A564, A565, A566, A591, A592, A593, A594, A595, A620, A801, A802, A803, A804, A805, A806, A807, A808, A809, A810, A811, A812, A813, A814, A815, A816, db401, db402, db403, db404, db405, db406, db501, db502, db503, db504, db505, db521, db522, db523, db524, db525, db526, db527, db541, db542, db543, db544, db545, db546, db550, db551, db552, db553, db554, db555, db556, db557, db561, db562, db563, db564, db565, db566, db567, db568, db569, db570, db571, db572, db591, db592, db593, db594, db595, db596, db597, db651, db691, db692, db693, db694, db801, db802, db803, db804, db805, db806, db807, db808, db809, db810, db811, da148, da501, da502, da503, da504, da521, da541, da561, da562, da563, da564, da565, da566, da591, da592, da593, da594, da595, da620, da801, da802, da803, da804, da805, da806, da807, da808, da809, da810, da811, da812, da813, da814, da815, da816, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="getDeviceTypeCmdSingal"
+            resultType="com.dzics.common.model.response.timeanalysis.TimeAnalysisCmd">
+        SELECT
+            dz.device_id AS deviceId,
+            dz.A817 as a817,
+            dz.B813 as b813,
+            dz.S561 as s561,
+            dz.A561 AS a561,
+            dz.A562 AS a562,
+            dz.A563 AS a563,
+            dz.A565 AS a565,
+            dz.A566 AS a566,
+            dz.B561 as b561,
+            dz.B562 as b562,
+            dz.B568 as b568,
+            dz.B569 as b569,
+            dz.B565 as b565,
+            dz.H561 AS h561,
+            dz.H562 AS h562,
+            dz.H565 AS h565,
+            dz.K561 AS k561,
+            dz.K562 AS k562,
+            dz.K565 AS k565,
+            dz.A567 as a567,
+            dz.update_time as updateTime,
+            eq.order_no AS orderNo,
+            eq.line_no AS lineNo,
+            eq.equipment_no AS equipmentNo,
+            eq.equipment_type AS equipmentType
+        FROM
+            dz_equipment AS eq
+         JOIN dz_data_collection AS dz ON eq.id = dz.device_id
+       WHERE
+	        eq.equipment_no = #{shardingParameter}
+    </select>
+    <select id="getDeviceId" resultType="com.dzics.common.model.response.timeanalysis.TimeAnalysisCmd">
+          SELECT
+            dz.device_id AS deviceId,
+            dz.A561 AS a561,
+            dz.A562 AS a562,
+            dz.A563 AS a563,
+            dz.A566 AS a566,
+            dz.A567 as a567,
+            dz.B561 as b561,
+            dz.B562 as b562,
+            dz.B569 as b569,
+            dz.B565 as b565
+        FROM
+            dz_equipment AS eq
+        LEFT JOIN dz_data_collection AS dz ON eq.id = dz.device_id
+        WHERE
+            dz.device_id = #{deviceId}
+    </select>
+
+</mapper>

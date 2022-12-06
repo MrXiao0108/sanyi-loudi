@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzEquipmentTimeAnalysisMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzEquipmentTimeAnalysis">
+        <id column="id" property="id" />
+        <result column="order_no" property="orderNo" />
+        <result column="line_no" property="lineNo" />
+        <result column="equipment_no" property="equipmentNo" />
+        <result column="equipment_type" property="equipmentType" />
+        <result column="work_state" property="workState" />
+        <result column="stop_time" property="stopTime" />
+        <result column="reset_time" property="resetTime" />
+        <result column="duration" property="duration" />
+        <result column="stop_data" property="stopData" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, order_no, line_no, equipment_no, equipment_type, work_state, stop_time, reset_time, duration, stop_data, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+
+    <update id="updateTimeWran">
+        UPDATE dz_equipment_time_analysis
+        SET work_state = 2
+        WHERE
+        stop_data >= #{localDate}
+        AND work_state = 4
+        AND duration = 1000;
+    </update>
+
+    <select id="getDeviceStateDetails"
+            resultType="com.dzics.common.model.response.timeanalysis.DeviceStateDetails">
+        SELECT
+        tim.stop_time as stopTime,
+        tim.reset_time as resetTime,
+        tim.work_state AS workState,
+        tim.duration,
+        tim.group_id as groupId
+        FROM
+        dz_equipment_time_analysis AS tim
+        WHERE
+           tim.device_id = #{deviceId,jdbcType=BIGINT}
+          AND tim.stop_time &gt;= #{startTime}
+          AND tim.stop_time &lt;= #{endTime}
+          AND tim.stop_data &gt;= #{localDate,jdbcType=DATE}
+    </select>
+    <select id="getDeviceStateDetailsStopTime"
+            resultType="com.dzics.common.model.response.timeanalysis.DeviceStateDetails">
+        SELECT
+        tim.stop_time AS stopTime,
+        tim.reset_time AS resetTime,
+        tim.work_state AS workState,
+        tim.duration,
+        tim.group_id as groupId
+        FROM
+        dz_equipment_time_analysis AS tim
+        WHERE
+         tim.device_id = #{deviceId,jdbcType=BIGINT}
+        AND tim.stop_time &gt;= #{stopTime}
+        AND tim.stop_data &gt;= #{localDate,jdbcType=DATE}
+    </select>
+    <select id="getUpdateTimeDesc" resultType="java.util.Date">
+        SELECT
+            update_time
+        FROM
+            `dz_equipment_time_analysis`
+        ORDER BY
+            update_time DESC
+        LIMIT 1;
+    </select>
+
+</mapper>

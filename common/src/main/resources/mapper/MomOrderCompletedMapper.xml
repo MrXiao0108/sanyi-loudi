@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.MomOrderCompletedMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.MomOrderCompleted">
+        <id column="id" property="id" />
+        <result column="pro_task_id" property="proTaskId" />
+        <result column="wip_order_no" property="wipOrderNo" />
+        <result column="order_id" property="orderId" />
+        <result column="line_id" property="lineId" />
+        <result column="station_id" property="stationId" />
+        <result column="product_no" property="productNo" />
+        <result column="outInput_type" property="outinputType" />
+        <result column="dz_station_code" property="dzStationCode" />
+        <result column="dz_station_code_spare" property="dzStationCodeSpare" />
+        <result column="process_flow_id" property="processFlowId" />
+        <result column="start_time" property="startTime" />
+        <result column="complete_time" property="completeTime" />
+        <result column="qr_code" property="qrCode" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, pro_task_id, wip_order_no, order_id, line_id, station_id, product_no, outInput_type, dz_station_code, dz_station_code_spare, process_flow_id, start_time, complete_time, qr_code, create_time
+    </sql>
+
+</mapper>

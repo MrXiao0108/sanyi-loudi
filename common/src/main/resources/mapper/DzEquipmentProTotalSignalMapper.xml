@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzEquipmentProTotalSignalMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzEquipmentProTotalSignal">
+        <id column="id" property="id" />
+        <result column="device_id" property="deviceId" />
+        <result column="rough_num" property="roughNum" />
+        <result column="qualified_num" property="qualifiedNum" />
+        <result column="now_num" property="nowNum" />
+        <result column="badness_num" property="badnessNum" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, device_id, rough_num, qualified_num, now_num, badness_num, create_time, update_time
+    </sql>
+
+    <select id="sumNumber" resultType="com.dzics.common.model.statistics.MakeQuantity">
+        SELECT IFNULL(sum(now_num), 0)       AS nowNum,
+               IFNULL(sum(qualified_num), 0) AS qualifiedNum,
+               IFNULL(sum(rough_num), 0)     AS roughNum,
+               IFNULL(sum(badness_num), 0)   AS badnessNum,
+               equiment_id                   as equimentId
+        FROM ${table}
+        WHERE work_data &lt; #{localData}
+        GROUP BY equiment_id
+    </select>
+
+</mapper>

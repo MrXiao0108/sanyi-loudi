@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.MomMaterialWarehouseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.MomMaterialWarehouse">
+        <id column="id" property="id" />
+        <result column="order_no" property="orderNo" />
+        <result column="line_no" property="lineNo" />
+        <result column="material_no" property="materialNo" />
+        <result column="quantity" property="quantity" />
+        <result column="load_quantity" property="loadQuantity" />
+        <result column="total_quantity" property="totalQuantity" />
+        <result column="sucess_quantity" property="sucessQuantity" />
+        <result column="total_deduct" property="totalDeduct" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, order_no, line_no, material_no, quantity, load_quantity, total_quantity, sucess_quantity, total_deduct, create_time, update_time
+    </sql>
+
+</mapper>

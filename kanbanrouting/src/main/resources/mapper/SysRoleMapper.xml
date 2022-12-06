@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.kanban.dao.SysRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.kanban.model.entity.SysRole">
+        <id column="role_id" property="roleId"/>
+        <result column="role_name" property="roleName"/>
+        <result column="role_code" property="roleCode"/>
+        <result column="description" property="description"/>
+        <result column="depart_id" property="departId"/>
+        <result column="basics_role" property="basicsRole"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        role_id, role_name, role_code, description,depart_id,basics_role, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="selRoleCode" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM
+        `sys_role`
+        WHERE
+        role_code = #{roleCode,jdbcType=VARCHAR};
+    </select>
+    <select id="getRoleName" resultType="java.lang.String">
+        select  role.role_name
+        from sys_role role
+        left join sys_user_role urole on role.role_id=urole.role_id
+        where urole.user_id=#{id}
+        and role.del_flag=0 and urole.del_flag=0
+    </select>
+    <select id="getSystemRunConfig" resultType="java.lang.String">
+        SELECT
+            run_model
+        FROM
+            `sys_config`
+        WHERE
+            id = 1
+    </select>
+
+</mapper>

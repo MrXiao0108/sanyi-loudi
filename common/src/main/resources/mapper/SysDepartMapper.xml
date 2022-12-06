@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.SysDepartMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.SysDepart">
+        <id column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="depart_name" property="departName"/>
+        <result column="depart_name_en" property="departNameEn"/>
+        <result column="depart_name_abbr" property="departNameAbbr"/>
+        <result column="depart_order" property="departOrder"/>
+        <result column="description" property="description"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="memo" property="memo"/>
+        <result column="status" property="status"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, parent_id, depart_name, depart_name_en, depart_name_abbr, depart_order, description, org_code, memo, status, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="getDepart" resultMap="BaseResultMap">
+        select *
+        from sys_depart dep
+        left join sys_user_depart udep on dep.id=udep.depart_id
+        where dep.del_flag=0 and udep.del_flag=0 and udep.org_code=#{orgCode}
+    </select>
+    <select id="getByCode" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM
+        sys_depart
+        WHERE
+        org_code = #{useOrgCode,jdbcType=VARCHAR}
+    </select>
+    <select id="listId" resultType="com.dzics.common.model.response.SwitchSiteDo">
+        SELECT
+        id,depart_name
+        FROM
+        sys_depart where id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    <select id="listAll" resultType="com.dzics.common.model.response.SwitchSiteDo">
+        SELECT
+        id,depart_name
+        FROM
+        sys_depart
+       where
+         del_flag = 0;
+    </select>
+    <select id="getByOrgCode" resultType="com.dzics.common.model.response.SwitchSiteDo">
+          SELECT
+            id,depart_name
+            FROM
+            sys_depart
+           where
+             del_flag = 0
+             and  org_code = #{orgCode,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByLineId" resultType="com.dzics.common.model.entity.SysDepart">
+        SELECT
+            *
+        FROM
+            sys_depart dep
+        WHERE
+            dep.id = (
+                SELECT
+                    ord.depart_id
+                FROM
+                    dz_order ord
+                WHERE
+                    ord.id = (
+                        SELECT
+                            line.order_id
+                        FROM
+                            dz_production_line line
+                        WHERE
+                            line.id = #{lineId}
+                    )
+            )
+    </select>
+
+</mapper>

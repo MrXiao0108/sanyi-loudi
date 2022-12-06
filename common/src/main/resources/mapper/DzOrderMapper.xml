@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzOrder">
+        <id column="id" property="id" />
+        <result column="depart_id" property="departId" />
+        <result column="order_no" property="orderNo" />
+        <result column="order_name" property="orderName" />
+        <result column="remarks" property="remarks" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <resultMap id="list" type="com.dzics.common.model.response.DzOrderDo">
+        <id column="id" property="id" />
+        <result column="depart_id" property="departId" />
+        <result column="order_no" property="orderNo" />
+        <result column="order_name" property="orderName" />
+        <result column="remarks" property="remarks" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+        <result column="depart_name" property="departName" />
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, depart_id, order_no, order_name, remarks, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+
+    <select id="listOrder" resultMap="list" >
+        select  * from ( SELECT
+            ord.id,
+            ord.depart_id,
+            ord.order_no,
+            ord.order_name,
+            ord.remarks,
+            ord.org_code,
+            ord.del_flag,
+            ord.create_by,
+            ord.create_time,
+            ord.update_by,
+            ord.update_time,
+            dep.depart_name
+            FROM
+            dz_order ord
+            LEFT JOIN sys_depart dep ON ord.depart_id = dep.id
+            WHERE
+            ord.del_flag = 0
+            AND dep.del_flag = 0
+            <if test="orgCode!=null">
+                and ord.org_code=#{orgCode}
+            </if>
+            <if test="departName!=null and departName!=''">
+              and   dep.depart_name like concat('%',#{departName},'%')
+            </if>
+            <if test="orderNo!=null and orderNo!=''">
+              and ord.order_no like concat('%',#{orderNo},'%')
+            </if>
+            <if test="departId!=null ">
+                and  ord.depart_id=#{departId}
+            </if>
+        ) as temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+    <select id="selOrders" resultType="com.dzics.common.model.response.commons.Orders">
+       SELECT
+            ord.id AS orderId,
+            ord.depart_id AS departId,
+            ord.order_no AS orderNo,
+            ord.order_name AS orderName,
+            dep.depart_name as departName,
+            lin.line_name as lineName
+        FROM
+            `dz_order` AS ord
+        LEFT JOIN sys_depart AS dep ON ord.depart_id = dep.id
+        LEFT JOIN dz_production_line AS lin ON ord.id = lin.order_id
+        <if test="orderId != null and orderId != '' ">
+            where  ord.id = #{orderId}
+        </if>
+    </select>
+    <select id="selOrdersDepart" resultType="com.dzics.common.model.response.commons.Orders">
+        SELECT
+        ord.id AS orderId,
+        ord.depart_id AS departId,
+        ord.order_no AS orderNo,
+        ord.order_name AS orderName,
+        dep.depart_name as departName
+        FROM
+        `dz_order` AS ord
+        LEFT JOIN sys_depart AS dep ON ord.depart_id = dep.id
+         where  ord.depart_id = #{departId}
+    </select>
+
+</mapper>

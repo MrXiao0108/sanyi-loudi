@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.JobExecutionLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzJobExecutionLog">
+        <id column="id" property="id" />
+        <result column="job_name" property="jobName" />
+        <result column="task_id" property="taskId" />
+        <result column="hostname" property="hostname" />
+        <result column="ip" property="ip" />
+        <result column="sharding_item" property="shardingItem" />
+        <result column="execution_source" property="executionSource" />
+        <result column="failure_cause" property="failureCause" />
+        <result column="is_success" property="isSuccess" />
+        <result column="start_time" property="startTime" />
+        <result column="complete_time" property="completeTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, job_name, task_id, hostname, ip, sharding_item, execution_source, failure_cause, is_success, start_time, complete_time
+    </sql>
+
+
+    <select id="geiList" resultType="com.dzics.common.model.response.workhistory.GetWorkDo">
+        SELECT * FROM
+        (
+        SELECT
+        id,
+        job_name AS jobName,
+        ip,
+        sharding_item AS shardingItem,
+        is_success AS isSuccess,
+        failure_cause AS failureCause,
+        start_time AS startTime,
+        complete_time AS endTime
+        FROM
+        job_execution_log
+        WHERE
+        1 = 1
+        <if test="jobName != null and jobName != ''">
+            AND job_name = #{jobName}
+        </if>
+        <if test="ip != null and ip != ''">
+            AND ip = #{ip}
+        </if>
+        <if test="isSuccess != null">
+            AND is_success = #{isSuccess}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            AND start_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND start_time &lt;= #{endTime}
+        </if>
+        ) as temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+
+</mapper>

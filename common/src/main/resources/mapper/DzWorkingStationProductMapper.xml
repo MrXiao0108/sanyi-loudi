@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzWorkingStationProductMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzWorkingStationProduct">
+        <id column="work_station_product_id" property="workStationProductId" />
+        <result column="working_station_id" property="workingStationId" />
+        <result column="product_id" property="productId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        work_station_product_id, working_station_id, product_id
+    </sql>
+    <select id="locationArtifactsList"
+            resultType="com.dzics.common.model.response.locationartifacts.LocationArtifactsDo">
+        SELECT
+        wsm.station_name as stationName,
+        wsm.station_code as stationCode,
+        wsm.sort_code as sortCode,
+        duct.product_name as productName,
+        duct.product_no as productNo,
+        dwsp.work_station_product_id as workStationProductId
+        FROM
+        `dz_working_station_product` AS dwsp
+        LEFT JOIN dz_work_station_management AS wsm ON dwsp.working_station_id = wsm.station_id
+        LEFT JOIN dz_product AS duct ON dwsp.product_id = duct.product_id
+        WHERE
+        dwsp.working_station_id = #{workingStationId}
+        <if test="productNo != null and productNo !='' ">
+            AND duct.product_no = #{productNo}
+        </if>
+
+    </select>
+
+</mapper>

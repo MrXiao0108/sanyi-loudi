@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.MomOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.MonOrder">
+        <id column="pro_task_order_id" property="proTaskOrderId" />
+        <result column="taskType" property="tasktype" />
+        <result column="taskId" property="taskid" />
+        <result column="version" property="version" />
+        <result column="WipOrderNo" property="wiporderno" />
+        <result column="ProductNo" property="productNo" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+        <result column="order_operation_result" property="orderOperationResult" />
+        <result column="order_output" property="orderOutput" />
+        <result column="order_old_state" property="orderOldState" />
+        <result column="line_id" property="lineId" />
+
+
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        pro_task_order_id, taskType, taskId, version, WipOrderNo, ProductNo, JsonOriginalData, org_code, del_flag, create_by, create_time, update_by, update_time,order_operation_result,order_output,order_old_state,line_id
+    </sql>
+    <select id="getProgressStatus" resultType="com.dzics.common.model.custom.StartWokeOrderMooM">
+        SELECT
+            pro_task_order_id AS proTaskId,
+            wipOrderNo,
+            ProductNo as productNo,
+            productAlias_productionLine as productAliasProductionLine,
+            ProgressStatus as progressStatus,
+            order_operation_result as orderOperationResult
+        FROM
+            `mom_order`
+        WHERE
+              order_id = #{orderId}
+             AND line_id = #{lineId}
+             AND WipOrderNo = #{guid}
+             <if test="progressStatus != null and progressStatus != ''">
+                 AND ProgressStatus = #{progressStatus}
+             </if>
+    </select>
+    <select id="getMomOrderByProducBarcode" resultType="java.lang.String">
+        select WipOrderNo
+        from mom_order
+        where pro_task_order_id=(
+            select pro_task_order_id
+            from mom_order_qr_code
+            where product_code=#{producBarcode}
+            limit 1
+        )
+    </select>
+    <select id="getOrderCallMaterialStatus" resultType="com.dzics.common.model.entity.MonOrder">
+        SELECT
+            *
+        FROM
+            `mom_order`
+        WHERE
+            order_id = #{orderId}
+        AND line_id = #{lineId}
+        AND ProgressStatus = #{down}
+        AND ProductNo = #{productNo}
+        AND WipOrderNo != 'DZICS-Manual'
+        ORDER BY
+            ScheduledStartDate ASC
+        LIMIT 1
+    </select>
+    <select id="getMomAuthOrderRes" resultType="com.dzics.common.model.response.mom.MomAuthOrderRes">
+            SELECT
+                pro_task_order_id as proTaskOrderId,
+                WipOrderNo as wipOrderNo,
+                productNo,
+                ProductAlias as productAlias,
+                ProgressStatus as progressStatus,
+                reality_start_date AS realityStartDate,
+                Quantity as quantity,
+                order_output AS orderOutput,
+                ScheduledStartDate as scheduledStartDate,
+                reality_complete_date as realityCompleteDate
+            FROM
+                `mom_order`
+            WHERE
+                order_id = #{orderId}
+            AND line_id = #{lineId}
+            AND (ProgressStatus = "110" OR ProgressStatus = "120" OR ProgressStatus = "160")
+            ORDER BY
+                ProgressStatus DESC,ScheduledStartDate ASC
+    </select>
+
+    <select id="getMomOrder" resultType="com.dzics.common.model.response.mom.GetMomOrderDo">
+        select  * from
+        (
+            SELECT
+            o.pro_task_order_id AS proTaskOrderId,
+            l.line_name AS lineName,
+            l.line_no AS lineNo,
+            o.order_operation_result AS orderOperationResult,
+            o.WipOrderNo AS wipOrderNo,
+            o.WipOrderType AS wipOrderType,
+            o.ProductAlias AS productName,
+            o.OprSequenceName AS OprSequenceName,
+            p.product_no AS dockingCode,
+            o.ProductNo AS productNo,
+            o.Quantity AS quantity,
+            o.order_output AS orderOutput,
+            o.ScheduledStartDate AS scheduledStartDate,
+            o.ScheduledCompleteDate AS scheduledCompleteDate,
+            o.reality_start_date AS realityStartDate,
+            o.reality_complete_date AS realityCompleteDate,
+            o.ProgressStatus AS progressStatus,
+            o.line_id AS lineId,
+            o.create_time AS createTIme,
+            o.update_time AS lastUpTime,
+            o.ok_report_quantity AS okReportNum,
+            o.ng_report_quantity AS ngReportNum
+<!--            o.JsonOriginalData as jsonOriginalData-->
+            FROM
+            mom_order AS o
+            LEFT JOIN dz_production_line AS l ON o.line_id = l.id
+            LEFT JOIN dz_product AS p ON p.sy_productNo = o.ProductNo and p.line_type=l.line_type AND o.ProductAlias=p.product_name
+            WHERE 1=1
+            <if test="wipOrderNo!=null and wipOrderNo!='' ">
+                and o.WipOrderNo = #{wipOrderNo}
+            </if>
+            <if test="wipOrderType != null and wipOrderType != '' ">
+                AND o.WipOrderType = #{wipOrderType}
+            </if>
+            <if test="progressStatus != null and progressStatus != '' ">
+                AND o.ProgressStatus = #{progressStatus}
+            </if>
+            <if test="lineId != null and lineId != '' ">
+                AND o.line_id = #{lineId}
+            </if>
+            <if test="startTime != null and startTime !='' ">
+                AND o.ScheduledStartDate &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != '' ">
+                AND o.ScheduledStartDate &lt;= #{endTime}
+            </if>
+            <if test="productName != null and productName != '' ">
+                AND o.ProductAlias = #{productName}
+            </if>
+        )  as temp
+        <if test="field != null and field != '' ">
+            ORDER BY temp.${field}  ${type}
+        </if>
+    </select>
+
+    <select id="getNowWorkPlanNum" resultType="java.lang.Integer">
+        SELECT
+            IFNULL(SUM(Quantity), 0)
+        FROM
+            mom_order
+        WHERE
+            order_id = #{orderId}
+        AND ScheduledStartDate BETWEEN #{beginTime} AND #{endTime}
+        AND (ProgressStatus != 140 and ProgressStatus != 150)
+    </select>
+
+
+</mapper>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzDetectorDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzDetectorData">
+        <id column="detector_data_id" property="detectorDataId"/>
+        <result column="data_val" property="dataVal"/>
+        <result column="detector_time" property="detectorTime"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        detector_data_id, order_no, product_id, is_show, table_col_val, table_col_con, serial_number, standard_value, upper_value, lower_value, compensation_value, deviation_value, data_val, detector_time, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="getGroupKey" resultType="java.util.Map">
+        SELECT
+        (
+        SELECT
+        dep.depart_name
+        FROM
+        sys_depart AS dep
+        WHERE
+        dep.id = (
+        SELECT
+        ord.depart_id
+        FROM
+        dz_order AS ord
+        WHERE
+        ord.order_no = da.order_no
+        )
+        ) AS departName,
+        (
+        SELECT
+        pro.product_name
+        FROM
+        dz_product AS pro
+        WHERE
+        pro.product_no = da.product_no
+        ) AS productName,
+        da.order_no AS orderNo,
+        da.detector_time as detectorTime,
+        da.product_no as productNo,
+        da.group_key
+        FROM
+        `dz_detector_data` AS da
+        WHERE
+        group_key in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        GROUP BY group_key
+    </select>
+    <select id="getDataValue" resultType="com.dzics.common.model.response.DetectionData">
+        SELECT
+            da.data_val as dataVal,
+            da.all_state as allState,
+            da.is_qualified as isQualified,
+            tem.table_col_val as tableColVal,
+            tem.table_col_con as tableColCon,
+            tem.standard_value as standardValue,
+            tem.upper_value as upperValue,
+            tem.lower_value as lowerValue,
+            tem.compensation_value as compensationValue
+        FROM
+            dz_detector_data AS da
+        LEFT JOIN dz_product_detection_template AS tem ON tem.detection_id = da.detection_id
+        WHERE
+            da.group_key = #{groupKey}
+        AND tem.is_show = 0
+    </select>
+    <!--    查询检测项趋势图-->
+    <select id="selectTrendChart" resultType="java.math.BigDecimal"
+            parameterType="com.dzics.common.model.request.SelectTrendChartVo">
+        select
+        ${detectionName}
+        from dz_workpiece_data
+        where product_no=#{productNo}
+        <if test="startTime!=null">
+            and date &gt;=#{startTime}
+        </if>
+        <if test="endTime!=null">
+            and date &lt;=#{endTime}
+        </if>
+        order by detector_time asc
+        LIMIT 200;
+    </select>
+    <select id="getChartsData" resultType="java.math.BigDecimal">
+        select
+        ddate.data_val as dataVal
+        from dz_detector_data ddate
+        LEFT JOIN dz_product_detection_template dtem on ddate.detection_id=dtem.detection_id
+        WHERE ddate.product_no=#{productNo}
+        AND ddate.order_no = #{orderNo}
+        order by ddate.detector_time desc
+    </select>
+    <select id="groupBuby" resultMap="BaseResultMap">
+        SELECT
+        group_key,
+        detector_time
+        FROM
+        (
+        SELECT
+        group_key,
+        detector_time
+        FROM
+        dz_detector_data
+        WHERE
+        product_no = #{productNo}
+        AND org_code = #{orgCode}
+        <if test="detectionResult != null ">
+            AND all_state_use = #{detectionResult}
+        </if>
+        <if test="startTime != null ">
+            AND detector_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null ">
+            AND detector_time &lt; #{endTime}
+        </if>
+        GROUP BY
+        group_key
+        ) AS temp
+        ORDER BY
+        detector_time DESC
+    </select>
+    <select id="groupBubyData" resultMap="BaseResultMap">
+        SELECT
+        group_key
+        FROM
+        (
+        SELECT
+            group_key,
+            detector_time
+            FROM
+            dz_detector_data
+            GROUP BY
+        group_key
+        ) AS temp
+        ORDER BY
+        detector_time DESC
+    </select>
+
+</mapper>

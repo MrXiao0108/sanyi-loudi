@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzLineShiftDayMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzLineShiftDay">
+        <id column="id" property="id"/>
+        <result column="line_id" property="lineId"/>
+        <result column="line_no" property="lineNo"/>
+        <result column="eq_id" property="eqId"/>
+        <result column="equipment_no" property="equipmentNo"/>
+        <result column="work_name" property="workName"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, line_id, line_no, eq_id, equipment_no, work_name, start_time, end_time, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="getBc" resultType="com.dzics.common.model.entity.DzLineShiftDay">
+        SELECT
+        eq.id AS eqId,
+        eq.equipment_no AS equipmentNo,
+        eq.equipment_type AS equipmentType,
+        eq.org_code as orgCode,
+        eq.order_no as orderNo,
+        lin.id AS lineId,
+        lin.line_no AS lineNo,
+        shit.work_name AS workName,
+        shit.start_time AS startTime,
+        shit.end_time AS endTime,
+        shit.sort_no as sortNo
+        FROM
+        dz_equipment AS eq
+        LEFT JOIN dz_production_line AS lin ON eq.line_id = lin.id
+        LEFT JOIN dz_equipment_work_shift AS shit ON shit.production_line_id = lin.id
+        WHERE
+        eq.id
+        IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        AND eq.del_flag = 0
+        AND shit.del_flag = 0
+    </select>
+    <select id="getNotPb" resultType="java.lang.Long">
+        SELECT
+            eq.id
+        FROM
+            dz_equipment AS eq
+        LEFT JOIN dz_line_shift_day AS shday ON eq.id = shday.eq_id
+        AND shday.work_data = #{now}
+        WHERE
+            eq.del_flag = 0
+        AND shday.work_data IS NULL;
+    </select>
+
+
+    <select id="getDayReportFormTaskSignal" resultType="com.dzics.common.model.response.DayReportForm">
+        SELECT
+                proLine.line_name as lineName,
+                equ.equipment_type as equipmentType,
+                equ.equipment_code as equipmentCode,
+                equ.equipment_name as equipmentName,
+                linDay.work_name as workName,
+                linDay.start_time as startTime,
+                linDay.end_time as endTime,
+                linDay.work_data as workData,
+                SUM(sig.now_num) AS nowNum,
+                SUM(sig.rough_num) AS roughNum,
+                SUM(sig.qualified_num) AS qualifiedNum,
+                SUM(sig.badness_num) AS badnessNum,
+                linDay.eq_id AS equimentId,
+                linDay.line_id  as lineId,
+                linDay.line_no  as lineNo,
+                linDay.order_no  as orderNo
+            FROM
+                dz_line_shift_day AS linDay
+            LEFT JOIN dz_equipment AS equ ON linDay.eq_id = equ.id
+            LEFT JOIN dz_production_line AS proLine ON linDay.line_id = proLine.id
+            LEFT JOIN dz_equipment_pro_num_signal AS sig ON linDay.id = sig.day_id
+            WHERE
+                linDay.work_data = #{now,jdbcType=DATE}
+            GROUP BY
+                linDay.id
+            ORDER BY
+                linDay.eq_id
+    </select>
+
+</mapper>

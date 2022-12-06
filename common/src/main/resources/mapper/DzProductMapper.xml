@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzProductMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzProduct">
+        <id column="product_id" property="productId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="depart_id" property="departId"/>
+        <result column="depart_org_code" property="departOrgCode"/>
+        <result column="product_name" property="productName"/>
+        <result column="product_no" property="productNo"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="picture" property="picture"/>
+        <result column="remarks" property="remarks"/>
+    </resultMap>
+
+    <!-- 查询列表 -->
+    <resultMap id="list" type="com.dzics.common.model.response.DzProductDo">
+        <id column="product_id" property="productId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="depart_id" property="departId"/>
+        <result column="depart_org_code" property="departOrgCode"/>
+        <result column="product_name" property="productName"/>
+        <result column="product_no" property="productNo"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="picture" property="picture"/>
+        <result column="remarks" property="remarks"/>
+        <result column="depart_name" property="departName"/>
+        <result column="line_type" property="lineType"/>
+        <result column="frequency" property="frequency"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        product_id, order_id, order_no, depart_id, depart_org_code, product_name, product_no, org_code, del_flag, create_by, create_time, update_by, update_time,picture,remarks
+    </sql>
+    <select id="getByOrderId" resultType="com.dzics.common.model.response.GetProductByOrderIdDo">
+        select
+        product_id as productId,
+        product_name as productName,
+        product_no as productNo
+        from dz_product
+        where depart_id=#{departId} and del_flag=0
+    </select>
+    <select id="listProduct" resultMap="list">
+        select  * from ( select pro.product_id,
+        pro.order_id,
+        pro.order_no,
+        pro.depart_id,
+        pro.depart_org_code,
+        pro.product_name,
+        pro.product_no,
+        pro.org_code,
+        pro.del_flag,
+        pro.create_by,
+        pro.create_time,
+        pro.update_by,
+        pro.update_time,
+        pro.picture,
+        pro.remarks,
+        pro.sy_product_alias,
+        pro.sy_category,
+        pro.sy_productNo,
+        pro.line_type,
+        pro.frequency,
+        dep.depart_name
+        from dz_product pro
+        left join sys_depart dep on pro.depart_id=dep.id
+        where pro.del_flag=0
+        <if test="productName!=null and productName!=''">
+            and pro.product_name like concat('%',#{productName},'%')
+        </if>
+        <if test="useOrgCode!=null">
+            and pro.org_code=#{useOrgCode}
+        </if>
+        <if test="lineType!=null and lineType!=''">
+            and pro.line_type=#{lineType}
+        </if>
+        ) as temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+    <select id="getByDepartId" resultType="com.dzics.common.model.response.ProductParm">
+            SELECT
+                product_name as productName,
+                product_no as productNo,
+                line_type as lineType
+            FROM
+                `dz_product`
+            WHERE
+                depart_id = #{departId}
+            AND del_flag = 0;
+    </select>
+    <select id="getByProeuctNoDepartId" resultType="java.lang.Long">
+         SELECT depart_id FROM `dz_product` WHERE product_no = #{productNo};
+    </select>
+    <select id="getProductNo" resultType="com.dzics.common.model.custom.WorkNumberName">
+        SELECT
+            product_no as modelNumber,
+            product_name as productName
+        FROM
+            `dz_product`
+        WHERE
+            product_no = #{modelNumber,jdbcType=VARCHAR}
+    </select>
+    <select id="getProductType" resultType="com.dzics.common.model.custom.WorkNumberName">
+         SELECT
+            product_no as modelNumber,
+            product_name as productName
+        FROM
+            `dz_product`
+        WHERE
+            product_name = #{productType,jdbcType=VARCHAR}
+    </select>
+    <select id="selProducts" resultType="com.dzics.common.model.response.commons.Products">
+        SELECT
+            product_id AS productId,
+            order_id AS orderId,
+            order_no AS orderNo,
+            depart_id AS departId,
+            product_name AS productName,
+            product_no AS productNo,
+            picture AS picture,
+            line_type as lineType
+        FROM
+            `dz_product`
+        where 1=1
+        <if test="lineType!=null and lineType!=''">
+            and line_type=#{lineType}
+        </if>
+    </select>
+    <select id="getDepartLineType" resultType="com.dzics.common.model.response.commons.Products">
+        SELECT
+        product_id AS productId,
+        order_id AS orderId,
+        order_no AS orderNo,
+        depart_id AS departId,
+        product_name AS productName,
+        product_no AS productNo,
+        picture AS picture,
+        line_type as lineType
+        FROM
+        `dz_product`
+        where
+        line_type=#{lineType}
+    </select>
+
+
+</mapper>

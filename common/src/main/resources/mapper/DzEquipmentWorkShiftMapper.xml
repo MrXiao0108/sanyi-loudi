@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzEquipmentWorkShiftMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzEquipmentWorkShift">
+        <id column="id" property="id"/>
+        <result column="production_line_id" property="productionLineId"/>
+        <result column="work_name" property="workName"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="sort_no" property="sortNo"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, production_line_id, work_name, start_time, end_time, sort_no, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <delete id="del">
+        update  dz_equipment_work_shift
+         set del_flag=1
+         where production_line_id=#{id}
+    </delete>
+    <select id="getPresentWorkShift" resultMap="BaseResultMap">
+        select *
+        from dz_equipment_work_shift
+        where production_line_id=#{id}
+        and start_time &lt;= #{dd}
+        and end_time &gt; #{dd}
+        and del_flag=0
+
+    </select>
+    <select id="getPresentWorkShift2" resultMap="BaseResultMap">
+        select *
+        from dz_equipment_work_shift
+        where production_line_id=#{id}
+        and start_time>=end_time
+        and (start_time &lt;= #{dd} or end_time &gt; #{dd})
+        and del_flag=0
+    </select>
+    <select id="getListByLineId" resultType="com.dzics.common.model.response.DzEquipmentWorkShiftDo">
+        select *
+        from dz_equipment_work_shift
+        where production_line_id=#{lineId}
+        and del_flag=0
+    </select>
+
+
+</mapper>

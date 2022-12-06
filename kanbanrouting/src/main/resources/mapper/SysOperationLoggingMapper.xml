@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.kanban.dao.SysOperationLoggingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.kanban.model.entity.SysOperationLogging">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="oper_desc" property="operDesc"/>
+        <result column="business_type" property="businessType"/>
+        <result column="method" property="method"/>
+        <result column="run_time" property="runTime"/>
+        <result column="request_method" property="requestMethod"/>
+        <result column="operator_type" property="operatorType"/>
+        <result column="oper_name" property="operName"/>
+        <result column="oper_url" property="operUrl"/>
+        <result column="oper_ip" property="operIp"/>
+        <result column="oper_location" property="operLocation"/>
+        <result column="oper_param" property="operParam"/>
+        <result column="json_result" property="jsonResult"/>
+        <result column="status" property="status"/>
+        <result column="exc_message" property="excMessage"/>
+        <result column="error_msg" property="errorMsg"/>
+        <result column="oper_time" property="operTime"/>
+        <result column="oper_date" property="operDate"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, oper_desc, business_type, method,run_time, request_method, operator_type, oper_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, exc_message, error_msg, oper_time, oper_date
+    </sql>
+    <select id="queryOperLog" resultType="com.dzics.kanban.model.entity.SysOperationLogging">
+        SELECT
+            id,
+            title,
+            business_type,
+            run_time,
+            request_method,
+            oper_url,
+            oper_ip,
+            oper_time,
+            oper_name,
+            `status`
+        FROM
+            sys_operation_logging
+        WHERE
+            id &gt;= (
+                SELECT
+                    id
+                FROM
+                    sys_operation_logging
+                LIMIT #{startLimit},
+                1
+            )
+        LIMIT #{limit}
+    </select>
+
+</mapper>

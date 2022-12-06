@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.SysRealTimeLogsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.SysRealTimeLogs">
+        <id column="communication_key" property="communicationKey"/>
+        <result column="message_id" property="messageId"/>
+        <result column="queue_name" property="queueName"/>
+        <result column="client_id" property="clientId"/>
+        <result column="order_code" property="orderCode"/>
+        <result column="line_no" property="lineNo"/>
+        <result column="device_type" property="deviceType"/>
+        <result column="device_code" property="deviceCode"/>
+        <result column="message_type" property="messageType"/>
+        <result column="message" property="message"/>
+        <result column="timestamp_time" property="timestampTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        communication_key, message_id, queue_name, client_id, order_code, line_no, device_type, device_code, message_type, message, timestamp_time
+    </sql>
+    <delete id="delJobExecutionLog">
+        DELETE
+        FROM
+        `job_execution_log`
+        WHERE
+        complete_time &lt; #{delDay}
+    </delete>
+    <delete id="delJobStatusTraceLog">
+       DELETE
+        FROM
+        `job_status_trace_log`
+        WHERE
+        creation_time &lt; #{delDay}
+    </delete>
+    <select id="getReatimeLogsType" resultType="com.dzics.common.model.response.ReatimLogRes">
+        SELECT
+        message,timestamp_time as realTime,client_id as clientId
+        FROM
+        sys_real_time_logs
+        WHERE
+         order_code = #{orderNo}
+        AND line_no = #{lineNo}
+        <choose>
+            <when test="deviceType != null and deviceType !='' ">
+                AND device_type = #{deviceType}
+            </when>
+            <otherwise>
+                AND device_type != 7
+            </otherwise>
+        </choose>
+        AND message_type = #{logType}
+        ORDER BY
+        timestamp_time DESC
+        LIMIT 10
+    </select>
+</mapper>

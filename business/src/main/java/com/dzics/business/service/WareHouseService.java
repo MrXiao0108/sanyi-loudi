@@ -1,0 +1,1 @@
+package com.dzics.business.service;import com.dzics.common.model.response.Result;import com.dzics.common.util.PageLimit;import org.springframework.cache.annotation.CacheEvict;public interface WareHouseService {    /**     * 把刷线页面的信号触发到队列中     * @param sub     * @return     */    Result refresh(String sub);}

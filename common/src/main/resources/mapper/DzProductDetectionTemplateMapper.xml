@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzProductDetectionTemplateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzProductDetectionTemplate">
+        <result column="detection_id" property="detectionId"/>
+        <result column="table_col_val" property="tableColVal"/>
+        <result column="table_col_con" property="tableColCon"/>
+        <result column="is_show" property="isShow"/>
+        <result column="serial_number" property="serialNumber"/>
+        <result column="standard_value" property="standardValue"/>
+        <result column="upper_value" property="upperValue"/>
+        <result column="lower_value" property="lowerValue"/>
+        <result column="compensation_value" property="compensationValue"/>
+        <result column="deviation_value" property="deviationValue"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        detection_id, product_id, table_col_val, table_col_con, is_show, serial_number, standard_value, upper_value, lower_value, compensation_value, deviation_value, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <update id="updateTemplate">
+        UPDATE dz_product_detection_template set product_no=#{newProductNo} where product_no=#{oldProductNo} and del_flag=0
+    </update>
+    <select id="groupById" resultType="com.dzics.common.model.request.DzDetectTempVo">
+        SELECT
+            tem.compensation_value AS compensationValue,
+            tem.is_show AS isShow,
+            tem.detection_id AS detectionId,
+            tem.table_col_val AS tableColVal,
+            tem.table_col_con AS tableColCon,
+            tem.order_id as orderId,
+            tem.whether_show AS whetherShow,
+            pro.line_type AS lineType
+        FROM
+            dz_product_detection_template AS tem
+        LEFT JOIN dz_product AS pro ON tem.product_no = pro.product_no
+        WHERE
+            group_Id = #{groupId};
+    </select>
+    <select id="listGroupBy" resultType="com.dzics.common.model.request.product.DzProductDetectionTemplateParms">
+     select  * from ( SELECT
+        tem.product_no AS productNo,
+        tem.depart_id AS departId,
+        pro.product_name AS productName,
+        line.line_name as  lineName,
+        tem.line_id as lineId,
+        tem.order_id as orderId,
+        tem.order_no as orderNO,
+        tem.line_no as lineNo
+        FROM
+        dz_product_detection_template AS tem
+        LEFT JOIN dz_product AS pro ON pro.product_no = tem.product_no
+        LEFT JOIN dz_production_line AS line ON line.id = tem.line_id
+        WHERE
+        tem.del_flag = 0
+        <if test="orderId != null and orderId != ''  ">
+            AND tem.order_id = #{orderId}
+        </if>
+        <if test="lineId != null and lineId != '' ">
+            AND tem.line_id = #{lineId}
+        </if>
+        <if test="departId != null">
+            AND tem.depart_id = #{departId}
+        </if>
+        <if test="productName != null and productName !='' ">
+            AND pro.product_name LIKE  concat(#{productName,jdbcType=VARCHAR},'%')
+        </if>
+        GROUP BY
+        tem.product_no,
+        tem.depart_id,
+        tem.line_id,
+        tem.order_id
+        ) as temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+    <select id="geteditdbdetectoritem" resultType="com.dzics.common.model.request.DBDetectTempVo">
+         SELECT
+            tem.detection_id AS detectionId,
+            tem.table_col_val AS tableColVal,
+            tem.table_col_con AS tableColCon,
+            tem.upper_value AS upperValue,
+            tem.lower_value AS lowerValue,
+            tem.standard_value AS standardValue,
+            tem.deviation_value AS deviationValue,
+            tem.order_id AS orderId,
+            pro.line_type AS lineType
+        FROM
+            dz_product_detection_template AS tem
+        LEFT JOIN dz_product AS pro ON tem.product_no = pro.product_no
+        WHERE
+            tem.group_Id = #{groupId};
+    </select>
+    <select id="getDzProDetectIonTemp" resultType="com.dzics.common.model.entity.ProductTemp">
+        SELECT
+            detection_id as detectionId,
+            compensation_value as compensationValue ,
+            upper_value as upperValue,
+            lower_value as lowerValue ,
+            standard_value as standardValue
+        FROM
+            `dz_product_detection_template`
+        WHERE
+            product_no = #{productNo}
+    </select>
+    <select id="getOneObj" resultMap="BaseResultMap">
+        select * from dz_product_detection_template where product_no=#{productNo} and is_show=0
+    </select>
+    <select id="listMap" resultType="java.util.Map">
+        SELECT
+         table_col_con as colName,
+         table_col_val as colData,
+         is_show
+        FROM
+            `dz_product_detection_template`
+        WHERE
+            order_no = #{orderNo}
+          AND line_no = #{lineNo}
+          AND product_no = #{productNo}
+    </select>
+    <select id="productId" resultType="com.dzics.common.model.request.DzDetectTempVo">
+        SELECT
+            compensation_value AS compensationValue,
+            detection_id AS detectionId,
+            table_col_val AS tableColVal,
+            table_col_con AS tableColCon,
+            group_Id as groupId
+        FROM
+            dz_product_detection_template
+        WHERE
+            order_id=#{orderId}
+            and line_id=#{lineId}
+            and product_no = #{productNo}
+
+    </select>
+    <select id="getProductNoItem" resultMap="BaseResultMap">
+        SELECT
+            standard_value,
+            upper_value,
+            lower_value,
+            compensation_value,
+            deviation_value
+        FROM
+            `dz_product_detection_template`
+        WHERE
+            product_no = #{productNo,jdbcType=VARCHAR}
+        AND table_col_val = #{item,jdbcType=VARCHAR}
+    </select>
+    <select id="listProductIdMap" resultType="java.util.Map">
+          SELECT
+         table_col_con as colName,
+         table_col_val as colData,
+         is_show
+        FROM
+         `dz_product_detection_template`
+        WHERE
+         product_id = #{productNo}
+    </select>
+    <select id="getDefoutDetectionTemp" resultType="java.util.Map">
+         SELECT
+         table_col_con as colName,
+         table_col_val as colData,
+         is_show
+        FROM
+         `dz_detection_template`
+    </select>
+
+    <select id="listMapUpload" resultType="java.util.Map">
+        SELECT
+            table_col_con as colName,
+            table_col_val as colData,
+            is_show as okShow,
+            standard_value as standardValue,
+            upper_value as upperValue,
+            lower_value as lowerValue
+        FROM
+            dz_product_detection_template
+        WHERE
+            order_no = #{orderNo}
+          AND line_no = #{lineNo}
+          AND product_no = #{productNo}
+    </select>
+
+    <select id="getDefoutDetectionTempUpLoad" resultType="java.util.Map">
+        SELECT
+            table_col_con as colName,
+            table_col_val as colData,
+            is_show as okShow,
+            standard_value as standardValue,
+            upper_value as upperValue,
+            lower_value as lowerValue
+        FROM
+            dz_detection_template
+    </select>
+</mapper>

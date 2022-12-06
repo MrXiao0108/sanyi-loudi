@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzProductionLineMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzProductionLine">
+        <id column="id" property="id"/>
+        <result column="order_id" property="orderId"/>
+        <result column="line_no" property="lineNo"/>
+        <result column="line_code" property="lineCode"/>
+        <result column="line_name" property="lineName"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remarks" property="remarks"/>
+        <result column="status" property="status"/>
+        <result column="line_type" property="lineType"/>
+
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, order_id, line_no, line_code, line_name, order_no, org_code, del_flag, create_by, create_time, update_by, update_time,remarks,status,line_type
+    </sql>
+
+    <select id="list" resultType="com.dzics.common.model.response.LineDo">
+        select  * from (  select
+        line.id,
+        line.order_id as orderId,
+        line.line_no as lineNo ,
+        line.line_code as lineCode,
+        line.line_name as lineName,
+        line.org_code as orgCode,
+        line.del_flag as delFlag,
+        line.create_by as createBy,
+        line.create_time as createTime,
+        line.update_by as updateBy,
+        line.update_time as updateTime,
+        line.remarks ,
+        line.`status`,
+        line.line_type as lineType,
+        line.statistics_equiment_id as statisticsEquimentId,
+        ord.order_no as orderNo,
+        dep.depart_name as departName,
+        eq.equipment_name as equipmentName,
+        eq.equipment_code as equipmentCode
+        from dz_production_line line
+        left join dz_order ord on line.order_id=ord.id
+        left join sys_depart dep on ord.depart_id=dep.id
+        left join dz_equipment eq on line.statistics_equiment_id=eq.id
+        where line.del_flag=0
+        and ord.del_flag=0
+        and dep.del_flag=0
+        <if test="useOrgCode!=null">
+            and ord.org_code=#{useOrgCode}
+            and line.org_code=#{useOrgCode}
+        </if>
+        <if test="orderNo!=null and orderNo!='' ">
+            and ord.order_no like concat('%',#{orderNo},'%')
+        </if>
+        <if test="departName!=null and departName!='' ">
+            and dep.depart_name like concat('%',#{departName},'%')
+        </if>
+        <if test="lineName!=null and lineName!='' ">
+            and line.line_name =#{lineName}
+         </if>
+        <if test="lineType!=null and lineType!='' ">
+            and line.line_type =#{lineType}
+        </if>
+        <if test="id!=null ">
+            and line.id=#{id}
+        </if>
+        ) as temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+    <select id="allLineList" resultType="com.dzics.common.model.response.feishi.LineListDo">
+        select
+        line.id as id,
+        line.line_no as lineNo,
+        line.line_name as lineName,
+        line.statistics_equiment_id as equipmentId,
+        line.order_no as orderNo,
+        eq.equipment_no as equipmentNo,
+        eq.equipment_code as equipmentCode,
+        dep.depart_name as departName
+        from dz_production_line line
+        left join dz_equipment as eq on line.statistics_equiment_id=eq.id
+        left join dz_order as ord on line.order_id=ord.id
+        left join sys_depart as dep on ord.depart_id=dep.id
+        order by line.create_time desc
+    </select>
+    <select id="selectLineIdList" resultType="java.lang.String">
+        select id
+        from dz_production_line
+    </select>
+    <select id="listOrderId" resultType="com.dzics.common.model.response.commons.Lines">
+        SELECT
+        id AS lineId,
+        order_id AS orderId,
+        line_no AS lineNo,
+        line_code AS lineCode,
+        line_name AS lineName,
+        order_no AS orderNo,
+        line_type AS lineType,
+        remarks
+        FROM
+        dz_production_line
+        <if test="orderId != null and orderId !='' ">
+            WHERE
+            order_id = #{orderId}
+        </if>
+    </select>
+    <select id="getOrderNoAndLineNo" resultType="com.dzics.common.model.custom.OrderIdLineId">
+        SELECT
+            ord.id AS orderId,
+            ord.order_no AS orderNo,
+            lin.id AS lineId,
+            lin.line_no as lienNo
+        FROM
+            `dz_order` AS ord
+         JOIN dz_production_line AS lin ON ord.id = lin.order_id
+         and lin.order_no = #{orderCode}
+         AND lin.line_no = #{lineNo}
+    </select>
+    <select id="getLineEqmentId" resultType="java.lang.Long">
+        SELECT
+            statistics_equiment_id
+        FROM
+            `dz_production_line`
+        WHERE
+            line_no = #{lineNo}
+        AND order_no = #{orderNo}
+    </select>
+    <select id="getByOerderId" resultType="com.dzics.common.model.response.commons.Lines">
+        SELECT
+        id AS lineId,
+        order_id AS orderId,
+        line_no AS lineNo,
+        line_code AS lineCode,
+        line_name AS lineName,
+        order_no AS orderNo,
+        line_type AS lineType,
+        remarks
+        FROM
+        dz_production_line
+        <if test="orderId != null and orderId !='' ">
+            WHERE
+            order_id = #{orderId}
+        </if>
+    </select>
+    <select id="getOrderIdLineId" resultType="com.dzics.common.model.custom.OrderIdLineId">
+         SELECT
+            ord.id AS orderId,
+            ord.order_no AS orderNo,
+            lin.id AS lineId,
+            lin.line_no as lienNo
+        FROM
+            `dz_order` AS ord
+         JOIN dz_production_line AS lin ON ord.id = lin.order_id
+         AND ord.id = #{orderId}
+         AND lin.id = #{lineId}
+    </select>
+    <select id="getlineType" resultType="java.lang.String">
+             SELECT
+                line_type
+            FROM
+                `dz_production_line`
+            WHERE
+                order_no = #{orderNo}
+            AND line_no = #{lineNo}
+    </select>
+
+
+</mapper>

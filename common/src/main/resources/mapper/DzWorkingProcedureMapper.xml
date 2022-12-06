@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzWorkingProcedureMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzWorkingProcedure">
+        <id column="working_procedure_id" property="workingProcedureId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="line_id" property="lineId"/>
+        <result column="work_code" property="workCode"/>
+        <result column="work_name" property="workName"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        working_procedure_id, order_id, line_id, work_code, work_name, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="selWorkingProcedure"
+            resultType="com.dzics.common.model.response.productiontask.workingProcedure.WorkingProcedureRes">
+        select  * from  (
+        SELECT
+        depart.id as departId,
+        depart.depart_name AS departName,
+        ord.order_no AS orderNo,
+        ord.id as orderId,
+        proLine.id as lineId,
+        proLine.line_no AS lineNo,
+        proLine.line_name AS lineName,
+        proc.work_code AS workCode,
+        proc.work_name AS workName,
+        proc.working_procedure_id AS workingProcedureId,
+        proc.sort_code as sortCode
+        FROM
+        `dz_working_procedure` proc
+        LEFT JOIN dz_order AS ord ON proc.order_id = ord.id
+        LEFT JOIN dz_production_line AS proLine ON proc.line_id = proLine.id
+        LEFT JOIN sys_depart AS depart ON proc.depart_id = depart.id
+        WHERE
+        1 = 1
+        <if test="orderId != null and  orderId!='' ">
+            AND ord.id = #{orderId}
+        </if>
+        <if test="lineId != null and  lineId!='' ">
+            AND proLine.id = #{lineId}
+        </if>
+        <if test="workName != null and  workName !='' ">
+            AND work_name LIKE concat('%',#{workName},'%')
+        </if>
+        <if test="workCode != null and  workCode !='' ">
+            AND work_code LIKE concat('%',#{workCode},'%')
+        </if>
+        ) as temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+    <select id="selProcedureProduct"
+            resultType="com.dzics.common.model.response.productiontask.workingProcedure.SelProcedureProduct">
+        SELECT
+            workp.work_name as workName,
+            workp.work_code as workCode,
+            duct.product_name as productName,
+            duct.product_no as productNo,
+            prod.work_proced_product_id as workProcedProductId
+        FROM
+            `dz_working_procedure_product` AS prod
+        LEFT JOIN dz_working_procedure AS workp ON prod.working_procedure_id = workp.working_procedure_id
+        LEFT JOIN dz_product AS duct ON prod.product_id = duct.product_id
+        WHERE
+            prod.working_procedure_id = #{workingProcedureId}
+            <if test="productNo != null and productNo !='' ">
+                AND duct.product_no = #{productNo}
+            </if>
+    </select>
+    <select id="getWorkingProcedures" resultType="com.dzics.common.model.response.commons.WorkingProcedures">
+        SELECT
+            work_name AS workName,
+            working_procedure_id AS workingProcedureId
+        FROM
+            `dz_working_procedure`
+    </select>
+
+</mapper>

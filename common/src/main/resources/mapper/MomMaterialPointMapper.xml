@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.MomMaterialPointMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.MomMaterialPoint">
+        <result column="material_point_id" property="materialPointId"/>
+        <result column="in_island_code" property="inIslandCode"/>
+        <result column="external_code" property="externalCode"/>
+        <result column="line_id" property="lineId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="line_no" property="lineNo"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="remarks_text" property="remarksText"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        material_point_id, in_island_code, external_code, line_id, order_id, line_no, order_no, remarks_text, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="getAllPoints" resultType="com.dzics.common.model.response.mom.GetFeedingAgvDo">
+        SELECT
+        materialPointId,
+        lineId,
+        lineName,
+        externalCode,
+        externalRegion,
+        lineNode,
+        inIslandCode,
+        stationName,
+        pointModel,
+        nextPoint,
+        dzStationCode
+        FROM
+        (
+        SELECT
+        material_point_id AS materialPointId,
+        pl.id as lineId,
+        pl.line_name AS lineName,
+        mp.external_code AS externalCode,
+        mp.external_region AS externalRegion,
+        mp.line_node AS lineNode,
+        mp.in_island_code AS inIslandCode,
+        mp.station_id AS stationName,
+        mp.point_model as pointModel,
+        mp.next_point as nextPoint,
+        mp.dz_station_code as dzStationCode
+        FROM
+        mom_material_point AS mp
+        LEFT JOIN dz_production_line AS pl ON pl.id = mp.line_id
+        WHERE
+        1 = 1
+        <if test="lineId!= null and lineId!= ''">
+            and pl.id = #{lineId}
+        </if>
+        <if test="externalCode !=null and externalCode!=''">
+            and mp.external_code = #{externalCode}
+        </if>
+        ) AS temp
+        <if test="type != null and type!=''">
+            order by temp.${field} ${type}
+        </if>
+    </select>
+    <select id="getStationCode" resultType="com.dzics.common.model.agv.MomUpPoint">
+        SELECT
+            station_id AS stationCode,
+            external_code AS externalCode,
+            point_model as pointModel
+        FROM
+            `mom_material_point`
+        WHERE
+        order_no = #{orderCode}
+        AND line_no = #{lineNo}
+        AND in_island_code = #{basketType}
+    </select>
+
+
+    <select id="exportAll" resultType="com.dzics.common.model.response.mom.GetFeedingAgvDo">
+        SELECT
+        materialPointId,
+        lineId,
+        lineName,
+        externalCode,
+        externalRegion,
+        lineNode,
+        inIslandCode,
+        stationName,
+        pointModel
+        FROM
+        (
+        SELECT
+        mmp.material_point_id AS materialPointId,
+        pl.id as lineId,
+        pl.line_name AS lineName,
+        mmp.external_code AS externalCode,
+        mmp.external_region AS externalRegion,
+        mmp.line_node AS lineNode,
+        mmp.in_island_code AS inIslandCode,
+        mmp.station_id AS stationName,
+        mp.point_model as pointModel
+        FROM
+        `mom_material_point` AS mmp
+        LEFT JOIN dz_order as od on od.id=mmp.order_id
+        LEFT JOIN dz_production_line as pl on pl.id=mmp.line_id
+        LEFT JOIN sys_depart as sd on sd.id=od.depart_id
+        WHERE
+        1=1
+        <if test="orderCode != null and orderCode!=''">
+            and sd.org_code = #{orderCode}
+        </if>
+        <if test="lineId!= null and lineId!= ''">
+            and pl.id = #{lineId}
+        </if>
+        <if test="externalCode !=null and externalCode!=''">
+            and mmp.external_code = #{externalCode}
+        </if>
+        ) as temp
+        <if test="type != null and type!=''">
+            order by temp.${field} ${type}
+        </if>
+    </select>
+    <select id="getMaterialPointStatus" resultType="com.dzics.common.model.response.mom.MaterialPointStatus">
+        SELECT
+            external_code as pointCode
+        FROM
+            `mom_material_point`
+        WHERE
+            order_no = #{orderCodeSys}
+    </select>
+
+</mapper>

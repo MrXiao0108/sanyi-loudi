@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.SysCommDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.SysCommData">
+        <id column="id" property="id" />
+        <result column="identification_code" property="identificationCode" />
+        <result column="order_number" property="orderNumber" />
+        <result column="production_line_number" property="productionLineNumber" />
+        <result column="device_type" property="deviceType" />
+        <result column="device_ip" property="deviceIp" />
+        <result column="device_number" property="deviceNumber" />
+        <result column="org_code" property="orgCode" />
+        <result column="tcp_value" property="tcpValue" />
+        <result column="device_item_value" property="deviceItemValue" />
+        <result column="tcp_description" property="tcpDescription" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, identification_code, order_number, production_line_number, device_type, device_ip, device_number, instruct, org_code, tcp_value, device_item_value, tcp_description, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+
+
+</mapper>

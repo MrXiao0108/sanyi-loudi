@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.SysCmdTcpMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.SysCmdTcp">
+        <id column="id" property="id"/>
+        <result column="tcp_name" property="tcpName"/>
+        <result column="tcp_value" property="tcpValue"/>
+        <result column="tcp_type" property="tcpType"/>
+        <result column="tcp_description" property="tcpDescription"/>
+        <result column="device_type" property="deviceType"/>
+        <result column="device_item_value" property="deviceItemValue"/>
+        <result column="cmd_name" property="cmdName"/>
+        <result column="group_type" property="groupType"/>
+    </resultMap>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap1" type="com.dzics.common.model.custom.CmdTcp">
+        <id column="tcp_value" property="tcpValue"/>
+        <result column="tcp_description" property="tcpDescription"/>
+        <result column="device_item_value" property="deviceItemValue"/>
+
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, tcp_name, tcp_value, tcp_type, tcp_description, device_type, device_item_value, cmd_name, group_type
+    </sql>
+    <!--    查询所有指令集合-->
+    <select id="getCmdTcpList" resultMap="BaseResultMap1">
+    select
+    c1.tcp_value as tcp_value,
+    c2.device_item_value as device_item_value,
+    c2.tcp_description as tcp_description
+     FROM sys_cmd_tcp c2
+    LEFT JOIN sys_cmd_tcp c1 on c2.group_type=c1.cmd_name
+    where c1.tcp_type is NOT null
+    </select>
+
+
+    <select id="examine" resultType="java.lang.Integer">
+        select count(id)
+        from sys_cmd_tcp
+        where group_type=#{cmdName} and
+        (
+        device_item_value=#{deviceItemValue} or
+        tcp_description=#{tcpDescription}
+        )
+    </select>
+
+    <select id="getTcpItemValue" resultMap="BaseResultMap">
+    select *
+    from sys_cmd_tcp tcpItem
+    where tcpItem.group_type=#{cmdName}
+    and tcpItem.tcp_description=#{tcpItemDescription}
+    </select>
+    <select id="listItem" resultType="com.dzics.common.model.response.SysCmdTcpItemVo">
+        select
+        id,
+        device_item_value,
+        tcp_description
+        from sys_cmd_tcp
+        where  group_type=(select tcp.cmd_name from sys_cmd_tcp tcp where tcp.id=#{id})
+        <if test="type!=null and type!=''">
+            order by ${field} ${type}
+        </if>
+    </select>
+    <select id="getTcpValue" resultType="java.lang.String">
+        	SELECT
+			 cmd_name AS cmdName
+            FROM
+                `sys_cmd_tcp`
+            WHERE
+                tcp_value = #{cmd}
+    </select>
+    <select id="getGroupType" resultType="com.dzics.common.model.custom.TcpDescValue">
+        SELECT
+            tcp_description as tcpDescription ,
+            device_item_value as deviceItemValue
+        FROM
+            sys_cmd_tcp
+        WHERE
+            group_type = #{cmdName}
+    </select>
+    <select id="getTcpValueList" resultType="com.dzics.common.model.custom.TcpValCmdName">
+            SELECT
+                cmd_name AS cmdName,
+                tcp_value AS tcpValue
+            FROM
+                `sys_cmd_tcp`
+            WHERE
+                tcp_value IS NOT NULL
+    </select>
+
+</mapper>

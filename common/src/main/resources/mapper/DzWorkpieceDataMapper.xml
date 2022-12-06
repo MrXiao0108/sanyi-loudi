@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzWorkpieceDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzWorkpieceData">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="line_no" property="lineNo"/>
+        <result column="out_ok" property="outOk"/>
+        <result column="detect01" property="detect01"/>
+        <result column="out_ok01" property="outOk01"/>
+        <result column="detect02" property="detect02"/>
+        <result column="out_ok02" property="outOk02"/>
+        <result column="detect03" property="detect03"/>
+        <result column="out_ok03" property="outOk03"/>
+        <result column="detect04" property="detect04"/>
+        <result column="out_ok04" property="outOk04"/>
+        <result column="detect05" property="detect05"/>
+        <result column="out_ok05" property="outOk05"/>
+        <result column="detect06" property="detect06"/>
+        <result column="out_ok06" property="outOk06"/>
+        <result column="detect07" property="detect07"/>
+        <result column="out_ok07" property="outOk07"/>
+        <result column="detect08" property="detect08"/>
+        <result column="out_ok08" property="outOk08"/>
+        <result column="detect09" property="detect09"/>
+        <result column="out_ok09" property="outOk09"/>
+        <result column="detect10" property="detect10"/>
+        <result column="out_ok10" property="outOk10"/>
+        <result column="detect11" property="detect11"/>
+        <result column="out_ok11" property="outOk11"/>
+        <result column="detect12" property="detect12"/>
+        <result column="out_ok12" property="outOk12"/>
+        <result column="detect13" property="detect13"/>
+        <result column="out_ok13" property="outOk13"/>
+        <result column="detect14" property="detect14"/>
+        <result column="out_ok14" property="outOk14"/>
+        <result column="detect15" property="detect15"/>
+        <result column="out_ok15" property="outOk15"/>
+        <result column="detect16" property="detect16"/>
+        <result column="out_ok16" property="outOk16"/>
+        <result column="detect17" property="detect17"/>
+        <result column="out_ok17" property="outOk17"/>
+        <result column="detect18" property="detect18"/>
+        <result column="out_ok18" property="outOk18"/>
+        <result column="detect19" property="detect19"/>
+        <result column="out_ok19" property="outOk19"/>
+        <result column="detect20" property="detect20"/>
+        <result column="out_ok20" property="outOk20"/>
+        <result column="detect21" property="detect21"/>
+        <result column="out_ok21" property="outOk21"/>
+        <result column="detect22" property="detect22"/>
+        <result column="out_ok22" property="outOk22"/>
+        <result column="detect23" property="detect23"/>
+        <result column="out_ok23" property="outOk23"/>
+        <result column="detect24" property="detect24"/>
+        <result column="out_ok24" property="outOk24"/>
+        <result column="detect25" property="detect25"/>
+        <result column="out_ok25" property="outOk25"/>
+        <result column="detect26" property="detect26"/>
+        <result column="out_ok26" property="outOk26"/>
+        <result column="detect27" property="detect27"/>
+        <result column="out_ok27" property="outOk27"/>
+        <result column="detect28" property="detect28"/>
+        <result column="out_ok28" property="outOk28"/>
+        <result column="date" property="date"/>
+        <result column="detector_time" property="detectorTime"/>
+        <result column="auth_code" property="authCode"/>
+        <result column="qr_code" property="qrCode"/>
+    </resultMap>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMapT" type="com.dzics.common.model.entity.DzWorkpieceData">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="name" property="name"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="line_no" property="lineNo"/>
+        <result column="out_ok" property="outOk"/>
+        <result column="detect01" property="detect01"/>
+        <result column="out_ok01" property="outOk01"/>
+        <result column="detect02" property="detect02"/>
+        <result column="out_ok02" property="outOk02"/>
+        <result column="detect03" property="detect03"/>
+        <result column="out_ok03" property="outOk03"/>
+        <result column="detect04" property="detect04"/>
+        <result column="out_ok04" property="outOk04"/>
+        <result column="detect05" property="detect05"/>
+        <result column="out_ok05" property="outOk05"/>
+        <result column="detect06" property="detect06"/>
+        <result column="out_ok06" property="outOk06"/>
+        <result column="detect07" property="detect07"/>
+        <result column="out_ok07" property="outOk07"/>
+        <result column="detect08" property="detect08"/>
+        <result column="out_ok08" property="outOk08"/>
+        <result column="detect09" property="detect09"/>
+        <result column="out_ok09" property="outOk09"/>
+        <result column="detect10" property="detect10"/>
+        <result column="out_ok10" property="outOk10"/>
+        <result column="detect11" property="detect11"/>
+        <result column="out_ok11" property="outOk11"/>
+        <result column="detect12" property="detect12"/>
+        <result column="out_ok12" property="outOk12"/>
+        <result column="detect13" property="detect13"/>
+        <result column="out_ok13" property="outOk13"/>
+        <result column="detect14" property="detect14"/>
+        <result column="out_ok14" property="outOk14"/>
+        <result column="detect15" property="detect15"/>
+        <result column="out_ok15" property="outOk15"/>
+        <result column="detect16" property="detect16"/>
+        <result column="out_ok16" property="outOk16"/>
+        <result column="detect17" property="detect17"/>
+        <result column="out_ok17" property="outOk17"/>
+        <result column="detect18" property="detect18"/>
+        <result column="out_ok18" property="outOk18"/>
+        <result column="detect19" property="detect19"/>
+        <result column="out_ok19" property="outOk19"/>
+        <result column="detect20" property="detect20"/>
+        <result column="out_ok20" property="outOk20"/>
+        <result column="detect21" property="detect21"/>
+        <result column="out_ok21" property="outOk21"/>
+        <result column="detect22" property="detect22"/>
+        <result column="out_ok22" property="outOk22"/>
+        <result column="detect23" property="detect23"/>
+        <result column="out_ok23" property="outOk23"/>
+        <result column="detect24" property="detect24"/>
+        <result column="out_ok24" property="outOk24"/>
+        <result column="detect25" property="detect25"/>
+        <result column="out_ok25" property="outOk25"/>
+        <result column="detect26" property="detect26"/>
+        <result column="out_ok26" property="outOk26"/>
+        <result column="detect27" property="detect27"/>
+        <result column="out_ok27" property="outOk27"/>
+        <result column="detect28" property="detect28"/>
+        <result column="out_ok28" property="outOk28"/>
+        <result column="date" property="date"/>
+        <result column="detector_time" property="detectorTime"/>
+        <result column="auth_code" property="authCode"/>
+        <result column="qr_code" property="qrCode"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, product_code, name, wp_station, order_no, line_no, out_ok, detect01, out_ok01, detect02, out_ok02, detect03, out_ok03, detect04, out_ok04, detect05, out_ok05, detect06, out_ok06, detect07, out_ok07, detect08, out_ok08, detect09, out_ok09, detect10, out_ok10, detect11, out_ok11, detect12, out_ok12, detect13, out_ok13, detect14, out_ok14, detect15, out_ok15, detect16, out_ok16, detect17, out_ok17, detect18, out_ok18, detect19, out_ok19, detect20, out_ok20, detect21, out_ok21, detect22, out_ok22, detect23, out_ok23, detect24, out_ok24, detect25, out_ok25, detect26, out_ok26, detect27, out_ok27, detect28, out_ok28, test_date, date, batch_code, detector_time,auth_code,qr_code
+    </sql>
+    <select id="newestThreeData" resultType="java.util.Map">
+        SELECT
+        id as onlyKey,
+        `name`,
+        product_no as productNo,
+        detector_time as detectorTime,
+        out_ok as outOk,
+        produc_barcode as producBarcode,
+        qr_code as qrCode,
+        detect01,
+        detect02,
+        detect03,
+        detect04,
+        detect05,
+        detect06,
+        detect07,
+        detect08,
+        detect09,
+        detect10,
+        detect11,
+        detect12,
+        detect13,
+        detect14,
+        detect15,
+        detect16,
+        detect17,
+        detect18,
+        detect19,
+        detect20,
+        detect21,
+        detect22,
+        detect23,
+        detect24,
+        detect25,
+        detect26,
+        detect27,
+        detect28,
+        out_ok01,
+        out_ok02,
+        out_ok03,
+        out_ok04,
+        out_ok05,
+        out_ok06,
+        out_ok07,
+        out_ok08,
+        out_ok09,
+        out_ok10,
+        out_ok11,
+        out_ok12,
+        out_ok13,
+        out_ok14,
+        out_ok15,
+        out_ok16,
+        out_ok17,
+        out_ok18,
+        out_ok19,
+        out_ok20,
+        out_ok21,
+        out_ok22,
+        out_ok23,
+        out_ok24,
+        out_ok25,
+        out_ok26,
+        out_ok27,
+        out_ok28
+        FROM
+        dz_workpiece_data
+        WHERE
+        id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        ORDER BY detector_time DESC
+    </select>
+    <select id="getQrCodeOutOk" resultType="com.dzics.common.model.entity.DzWorkpieceData">
+        SELECT
+            out_ok as outOk,
+	        work_number as workNumber
+        FROM
+            `dz_workpiece_data`
+        WHERE
+            produc_barcode = #{qrCode}
+        AND out_ok = 0
+    </select>
+    <select id="getQrCodeProduct" resultType="com.dzics.common.model.entity.DzWorkpieceData">
+        SELECT
+            workp.*, pro.product_id AS productId
+        FROM
+            `dz_workpiece_data` AS workp
+        LEFT JOIN dz_product AS pro ON workp.product_no = pro.product_no
+        WHERE
+            workp.produc_barcode = #{qrCode}
+        AND workp.out_ok = 0
+    </select>
+    <select id="getProductIdCheckItems"
+            resultType="com.dzics.common.model.response.productiontask.stationbg.CheckItems">
+        SELECT
+            stpro.working_station_id AS stationId,
+            detemp.table_col_val AS tableColVal,
+            detemp.table_col_con AS tableColCon,
+            detemp.detection_id AS detectionId
+        FROM
+            `dz_working_station_product` AS stpro
+        LEFT JOIN dz_work_station_template AS staTmp ON stpro.work_station_product_id = staTmp.work_station_product_id
+        LEFT JOIN dz_product_detection_template AS detemp ON staTmp.detection_id = detemp.detection_id
+        WHERE
+            stpro.product_id = #{productId}
+        AND detemp.order_id = #{orderId}
+        AND detemp.line_id = #{lineId}
+    </select>
+    <select id="notBoundQrCode" resultType="java.util.Map">
+        SELECT
+        `name`,
+        product_no as productNo,
+        detector_time as detectorTime,
+        out_ok as outOk,
+        produc_barcode as producBarcode,
+        qr_code as qrCode,
+        machine_number,
+        detect01,
+        detect02,
+        detect03,
+        detect04,
+        detect05,
+        detect06,
+        detect07,
+        detect08,
+        detect09,
+        detect10,
+        detect11,
+        detect12,
+        detect13,
+        detect14,
+        detect15,
+        detect16,
+        detect17,
+        detect18,
+        detect19,
+        detect20,
+        detect21,
+        detect22,
+        detect23,
+        detect24,
+        detect25,
+        detect26,
+        detect27,
+        detect28,
+        out_ok01,
+        out_ok02,
+        out_ok03,
+        out_ok04,
+        out_ok05,
+        out_ok06,
+        out_ok07,
+        out_ok08,
+        out_ok09,
+        out_ok10,
+        out_ok11,
+        out_ok12,
+        out_ok13,
+        out_ok14,
+        out_ok15,
+        out_ok16,
+        out_ok17,
+        out_ok18,
+        out_ok19,
+        out_ok20,
+        out_ok21,
+        out_ok22,
+        out_ok23,
+        out_ok24,
+        out_ok25,
+        out_ok26,
+        out_ok27,
+        out_ok28
+
+        FROM
+        dz_workpiece_data
+        WHERE
+        id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <select id="getNewestThreeDataId" resultType="java.lang.String">
+      SELECT
+        id
+        FROM
+            dz_workpiece_data
+        where
+               order_no = #{orderNo}
+           AND line_no = #{lineNo}
+        ORDER BY
+           create_time DESC
+        LIMIT #{size}
+    </select>
+
+    <select id="selDetectorData" resultType="java.util.Map">
+        select *
+        from dz_workpiece_data
+        where
+        order_no=#{orderNo}
+        and line_no=#{lineNo}
+        and product_no=#{productNo}
+        <if test="startTime !=null">
+            and date &gt;= #{startTime}
+        </if>
+        <if test="endTime !=null">
+            and date &lt;= #{endTime}
+        </if>
+        <if test="detectionResult !=null">
+            and out_ok=#{detectionResult}
+        </if>
+        <if test="type != null and type != '' ">
+            ORDER BY
+            ${field}  ${type}
+        </if>
+    </select>
+
+    <select id="getChartsData" resultType="java.math.BigDecimal">
+        select
+            ${fieldName}
+        from dz_workpiece_data
+        where order_no=#{orderNo}
+        and line_no=#{lineNo}
+        and product_no=#{productNo}
+        order by detector_time desc
+
+    </select>
+    <select id="selectDataList" resultType="com.dzics.common.model.response.GetDetectionOneDo">
+            select
+            product_no AS productNo,
+            name AS productName,
+            ${tableColVal} as detectValue,
+            ${outOkVal} as detectOutOk,
+            detector_time as detectorTime,
+            produc_barcode as producBarcode
+            from dz_workpiece_data
+            where order_no=#{orderNo}
+            and line_no=#{lineNo}
+            order by detector_time desc
+    </select>
+    <select id="getDetectionByMachine" resultType="java.math.BigDecimal">
+                select
+            ${fieldName}
+        from dz_workpiece_data
+        where order_no=#{orderNo}
+        and line_no=#{lineNo}
+        and product_no=#{productNo}
+        and machine_number=#{machine}
+        order by detector_time desc
+
+    </select>
+
+    <select id="getOneWorkpieceData" resultType="com.dzics.common.model.entity.DzWorkpieceData">
+        select
+        id ,
+        order_no,
+        `name`,
+        product_no,
+        detector_time,
+        out_ok,
+        produc_barcode,
+        detect01,
+        detect02,
+        detect03,
+        detect04,
+        detect05,
+        detect06,
+        detect07,
+        detect08,
+        detect09,
+        detect10,
+        detect11,
+        detect12,
+        detect13,
+        detect14,
+        detect15,
+        detect16,
+        detect17,
+        detect18,
+        detect19,
+        detect20,
+        detect21,
+        detect22,
+        detect23,
+        detect24,
+        detect25,
+        detect26,
+        detect27,
+        detect28,
+        out_ok01,
+        out_ok02,
+        out_ok03,
+        out_ok04,
+        out_ok05,
+        out_ok06,
+        out_ok07,
+        out_ok08,
+        out_ok09,
+        out_ok10,
+        out_ok11,
+        out_ok12,
+        out_ok13,
+        out_ok14,
+        out_ok15,
+        out_ok16,
+        out_ok17,
+        out_ok18,
+        out_ok19,
+        out_ok20,
+        out_ok21,
+        out_ok22,
+        out_ok23,
+        out_ok24,
+        out_ok25,
+        out_ok26,
+        out_ok27,
+        out_ok28
+        from dz_workpiece_data
+        where order_no=#{orderNo}
+        and line_no=${lineNo}
+        <if test="productName!=null and productName!=''">
+            and name=#{productName}
+        </if>
+        <if test="producBarcode!=null and producBarcode!=''">
+            and produc_barcode=#{producBarcode}
+        </if>
+        and detector_time &gt;= #{startDate}
+        and detector_time &lt;=#{endDate}
+        order by detector_time desc
+        <if test="number!=-1">
+            limit 1
+        </if>
+
+
+    </select>
+    <select id="getLastDzWorkpieceData" resultType="com.dzics.common.model.entity.DzWorkpieceData">
+        select *
+        from dz_workpiece_data
+        where order_no=#{orderNo}
+        and line_no=#{lineNo}
+        and date=#{now}
+        order by detector_time desc
+        limit 1
+    </select>
+
+    <select id="getDayWorkModel" resultType="com.dzics.common.model.dto.check.DayCheckModel">
+        SELECT
+            `name` AS modelName,
+            `date` AS dayDate
+        FROM
+            dz_workpiece_data
+        WHERE
+            check_month = #{month}
+          AND order_no = #{orderNo}
+          AND line_no = #{lineNo}
+          AND `name` != 'unknown'
+        GROUP BY
+            `date`,
+            `name`
+    </select>
+
+
+    <select id="newestThreeDataMom" resultType="java.util.Map">
+        SELECT
+        wo.id as onlyKey,
+        `name`,
+        product_no as productNo,
+        detector_time as detectorTime,
+        out_ok as outOk,
+        produc_barcode as producBarcode,
+        qr_code as qrCode,
+        detect01,
+        detect02,
+        detect03,
+        detect04,
+        detect05,
+        detect06,
+        detect07,
+        detect08,
+        detect09,
+        detect10,
+        detect11,
+        detect12,
+        detect13,
+        detect14,
+        detect15,
+        detect16,
+        detect17,
+        detect18,
+        detect19,
+        detect20,
+        detect21,
+        detect22,
+        detect23,
+        detect24,
+        detect25,
+        detect26,
+        detect27,
+        detect28,
+        out_ok01,
+        out_ok02,
+        out_ok03,
+        out_ok04,
+        out_ok05,
+        out_ok06,
+        out_ok07,
+        out_ok08,
+        out_ok09,
+        out_ok10,
+        out_ok11,
+        out_ok12,
+        out_ok13,
+        out_ok14,
+        out_ok15,
+        out_ok16,
+        out_ok17,
+        out_ok18,
+        out_ok19,
+        out_ok20,
+        out_ok21,
+        out_ok22,
+        out_ok23,
+        out_ok24,
+        out_ok25,
+        out_ok26,
+        out_ok27,
+        out_ok28,
+        mo.ProductNo as momProductNo,
+        mo.WipOrderNo as momOrderNo
+        FROM
+        dz_workpiece_data AS wo
+        LEFT JOIN mom_order_qr_code AS qr ON qr.product_code = wo.produc_barcode
+        LEFT JOIN mom_order AS mo ON qr.pro_task_order_id = mo.pro_task_order_id
+        WHERE
+        wo.id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        ORDER BY detector_time DESC
+    </select>
+    <select id="getWorkPieceData" resultType="java.lang.String">
+        SELECT id FROM `dz_workpiece_data` WHERE order_no= #{orderNo} AND line_no= #{lineNo} AND `name`= #{name} ORDER BY create_time DESC LIMIT #{size};
+    </select>
+
+    <select id="newestThreeDataMomSingle" resultType="java.util.Map">
+        SELECT
+        wo.id as onlyKey,
+        `name`,
+        product_no as productNo,
+        detector_time as detectorTime,
+        out_ok as outOk,
+        produc_barcode as producBarcode,
+        qr_code as qrCode,
+        detect01,
+        detect02,
+        detect03,
+        detect04,
+        detect05,
+        detect06,
+        detect07,
+        detect08,
+        detect09,
+        detect10,
+        detect11,
+        detect12,
+        detect13,
+        detect14,
+        detect15,
+        detect16,
+        detect17,
+        detect18,
+        detect19,
+        detect20,
+        detect21,
+        detect22,
+        detect23,
+        detect24,
+        detect25,
+        detect26,
+        detect27,
+        detect28,
+        out_ok01,
+        out_ok02,
+        out_ok03,
+        out_ok04,
+        out_ok05,
+        out_ok06,
+        out_ok07,
+        out_ok08,
+        out_ok09,
+        out_ok10,
+        out_ok11,
+        out_ok12,
+        out_ok13,
+        out_ok14,
+        out_ok15,
+        out_ok16,
+        out_ok17,
+        out_ok18,
+        out_ok19,
+        out_ok20,
+        out_ok21,
+        out_ok22,
+        out_ok23,
+        out_ok24,
+        out_ok25,
+        out_ok26,
+        out_ok27,
+        out_ok28,
+        mo.ProductNo as momProductNo,
+        mo.WipOrderNo as momOrderNo
+        FROM
+        dz_workpiece_data AS wo
+        LEFT JOIN mom_order_qr_code AS qr ON qr.product_code = wo.produc_barcode
+        LEFT JOIN mom_order AS mo ON qr.pro_task_order_id = mo.pro_task_order_id
+        WHERE
+        wo.id = #{id}
+        ORDER BY detector_time DESC
+    </select>
+
+    <select id="getMaErBiaoDetectionMonitor" resultType="java.util.Map">
+        SELECT
+            dwd.`name` AS productName,
+            dwd.produc_barcode AS qrCode,
+            dwd.detect28 AS detect28,
+            dtmp.upper_value as upperValue,
+            dtmp.lower_value as lowerValue
+        FROM
+            dz_workpiece_data AS dwd
+        LEFT JOIN dz_product_detection_template AS dtmp ON dwd.product_no = dtmp.product_no
+        AND dwd.order_no = dtmp.order_no
+        WHERE
+            dwd.order_no = #{orderNo}
+        AND dwd.line_no = #{lineNo}
+        AND dwd.produc_barcode = #{qrCode}
+        AND dtmp.table_col_val = 'detect28'
+    </select>
+
+    <select id="getDayWorkModelCjg" resultType="com.dzics.common.model.dto.check.DayCheckModel">
+        SELECT
+            left(qrc.create_time,10) as dayDate,
+            od.ProductAlias as `modelName`
+        FROM
+            mom_order AS od
+        LEFT JOIN mom_order_qr_code as qrc on qrc.pro_task_order_id=od.pro_task_order_id
+        WHERE qrc.order_no = #{orderNo}
+        and qrc.line_no = #{lineNo}
+        AND left(qrc.create_time,7) = #{month}
+        GROUP BY dayDate,`modelName`
+    </select>
+
+</mapper>

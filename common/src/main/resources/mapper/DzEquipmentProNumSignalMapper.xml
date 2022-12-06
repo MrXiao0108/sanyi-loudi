@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzEquipmentProNumSignalMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzEquipmentProNumSignal">
+        <id column="id" property="id" />
+        <result column="day_id" property="dayId" />
+        <result column="order_no" property="orderNo" />
+        <result column="line_no" property="lineNo" />
+        <result column="equiment_id" property="equimentId" />
+        <result column="batch_number" property="batchNumber" />
+        <result column="product_type" property="productType" />
+        <result column="model_number" property="modelNumber" />
+        <result column="rough_num" property="roughNum" />
+        <result column="qualified_num" property="qualifiedNum" />
+        <result column="now_num" property="nowNum" />
+        <result column="total_num" property="totalNum" />
+        <result column="badness_num" property="badnessNum" />
+        <result column="work_data" property="workData" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+        <result column="work_year" property="workYear"/>
+        <result column="work_mouth" property="workMouth"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, day_id, order_no, line_no, equiment_id, batch_number, product_type, model_number, rough_num, qualified_num, now_num, total_num, badness_num, work_data, org_code, del_flag, create_by, create_time, update_by, update_time,work_year,work_mouth
+    </sql>
+    <select id="getEquimentIdDayProNum" resultType="java.lang.Long">
+        SELECT
+            SUM(now_num)
+        FROM
+            ${tableKey}
+        WHERE
+            work_data = #{nowDay}
+        AND equiment_id = #{id}
+    </select>
+
+    <select id="selectTodayByHour" resultType="com.dzics.common.model.response.HourToday">
+        SELECT
+                sin.work_hour as `hour`,
+                SUM(sin.now_num) as `sumToday`,
+                sin.equiment_id  as deviceId
+            FROM
+                ${tableKey} as sin
+            WHERE
+             sin.work_data = #{nowDate}
+              AND   sin.equiment_id IN
+                <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+        GROUP BY
+            sin.equiment_id,
+            sin.work_hour
+    </select>
+    <select id="getMonthData" resultType="java.util.Map">
+        SELECT
+            work_mouth AS workMouth,
+            IFNULL(SUM(qualified_num),0) AS qualified,
+            IFNULL(SUM(badness_num),0) AS rejects
+        FROM ${tableKey}
+        WHERE
+              equiment_id=#{eqId}
+          AND work_year=YEAR(NOW())
+        GROUP BY work_mouth
+    </select>
+    <select id="shiftProductionDetails" resultType="java.lang.Long">
+        select IFNULL(sum(qualified_num),0)
+        from ${tableKey} num
+        where day_id=#{id}
+    </select>
+    <select id="productionDailyReport" resultType="java.lang.Long">
+        SELECT
+        IFNULL((select sum(now_num) from dz_equipment_pro_num_signal where work_data=dd.datelist and  equiment_id=#{equipmentId}),0) as nowSum
+        FROM dim_date dd
+        WHERE date_format(datelist,'%Y-%m') = date_format(now(),'%Y-%m')
+    </select>
+    <select id="getMonthDataShift" resultType="java.util.Map">
+        SELECT
+            wor.work_name as workName,
+            wor.work_data as workData,
+            wor.work_mouth as workMouth,
+            wor.work_year as workYear,
+            IFNULL(SUM(sig.qualified_num), 0) AS qualifiedNum,
+            IFNULL(SUM(sig.badness_num), 0) AS badnessNum
+        FROM
+            dz_line_shift_day AS wor
+        LEFT JOIN ${tableKey} AS sig ON wor.id = sig.day_id
+        WHERE
+            wor.work_year = #{year}
+        AND wor.eq_id = #{eqId}
+        GROUP BY
+            wor.work_mouth,
+            wor.work_name
+    </select>
+
+    <select id="getDeviceProNumber" resultType="com.dzics.common.model.statistics.MakeQuantity">
+        SELECT IFNULL(sum(now_num), 0)       AS nowNum,
+               IFNULL(sum(qualified_num), 0) AS qualifiedNum,
+               IFNULL(sum(rough_num), 0)     AS roughNum,
+               IFNULL(sum(badness_num), 0)   AS badnessNum
+        FROM ${tableName}
+        WHERE work_data = #{localDate,jdbcType=DATE}
+          AND equiment_id = #{deviceId,jdbcType=BIGINT}
+    </select>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzToolInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzToolInfo">
+        <id column="id" property="id" />
+        <result column="tool_groups_id" property="toolGroupsId" />
+        <result column="tool_no" property="toolNo" />
+        <result column="tool_life" property="toolLife" />
+        <result column="tool_life_counter" property="toolLifeCounter" />
+        <result column="tool_life_counter_type" property="toolLifeCounterType" />
+        <result column="tool_wear_radius" property="toolWearRadius" />
+        <result column="tool_nose_direction" property="toolNoseDirection" />
+        <result column="description" property="description" />
+        <result column="org_code" property="orgCode" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, tool_groups_id, tool_no, tool_life, tool_life_counter, tool_life_counter_type, tool_wear_radius, tool_nose_direction, description, org_code, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="getToolByEqIdAndGroupNo" resultType="com.dzics.common.model.entity.DzToolInfo">
+        select tinfo.tool_no
+        from dz_tool_info tinfo
+        where tinfo.tool_groups_id=#{toolGroupsId}
+        and tinfo.tool_no not in(
+            select tool_no
+            from dz_tool_compensation_data
+            where equipment_id=#{equipmentId}
+        )
+    </select>
+
+</mapper>

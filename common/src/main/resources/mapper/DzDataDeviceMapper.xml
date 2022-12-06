@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzDataDeviceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzDataDevice">
+        <id column="device_key" property="deviceKey" />
+        <result column="device_id" property="deviceId" />
+        <result column="company_code" property="companyCode" />
+        <result column="factory_code" property="factoryCode" />
+        <result column="device_name" property="deviceName" />
+        <result column="device_type" property="deviceType" />
+        <result column="device_type_code" property="deviceTypeCode" />
+        <result column="assets_encoding" property="assetsEncoding" />
+        <result column="system_product_name" property="systemProductName" />
+        <result column="equipment_id" property="equipmentId" />
+        <result column="ser_num" property="serNum" />
+        <result column="nc_ver" property="ncVer" />
+        <result column="soldering_type" property="solderingType" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        device_key, device_id, company_code, factory_code, device_name, device_type, device_type_code, assets_encoding, system_product_name, equipment_id, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="getSanyDevice" resultType="com.dzics.common.model.response.sany.SanyDeviceData">
+         SELECT
+                *
+            FROM
+                (
+                    SELECT
+                        dev.device_key as deviceKey ,
+                        dev.device_id as deviceId ,
+                        dev.equipment_id as equipmentId,
+                        dev.company_code as companyCode,
+                        dev.factory_code as factoryCode,
+                        dev.device_name as deviceName,
+                        dev.device_type as deviceType,
+                        dev.device_type_code as deviceTypeCode,
+                        dev.assets_encoding as assetsEncoding,
+                        dev.system_product_name as systemProductName,
+                        dev.ser_num as serNum,
+                        dev.nc_ver as ncVer,
+                        dev.soldering_type as solderingType,
+                        eq.line_id as lineId,
+                        eq.order_no as orderNo,
+                        eq.line_no as lineNo,
+                        lin.line_name as lineName,
+                        lin.order_id as orderId
+                    FROM
+                        `dz_data_device` AS dev
+                    LEFT JOIN dz_equipment AS eq ON dev.equipment_id = eq.id
+                    LEFT JOIN dz_production_line AS lin ON lin.id = eq.line_id
+                ) AS temp
+                where  1 = 1
+        <if test="deviceId != null ">
+            AND temp.deviceId = #{deviceId}
+         </if>
+         <if test="deviceName != null and deviceName !='' ">
+             AND    temp.deviceName = #{deviceName}
+         </if>
+        <if test="deviceType != null ">
+            AND   temp.deviceType = #{deviceType}
+        </if>
+        <if test="deviceTypeCode != null and deviceTypeCode != '' ">
+            AND    temp.deviceTypeCode = #{deviceTypeCode}
+        </if>
+        <if test="orderNo != null and orderNo != '' ">
+            AND   temp.orderNo = #{orderNo}
+        </if>
+        <if test="lineNo != null and lineNo != '' ">
+            AND    temp.lineId = #{lineNo}
+        </if>
+        <if test="type != null and type!=''">
+            order by temp.${field}  ${type}
+        </if>
+    </select>
+
+</mapper>

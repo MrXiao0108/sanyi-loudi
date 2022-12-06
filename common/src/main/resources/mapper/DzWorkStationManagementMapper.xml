@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzWorkStationManagementMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzWorkStationManagement">
+        <id column="station_id" property="stationId"/>
+        <result column="working_procedure_id" property="workingProcedureId"/>
+        <result column="station_name" property="stationName"/>
+        <result column="sort_code" property="sortCode"/>
+        <result column="station_code" property="stationCode"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        station_id, working_procedure_id, station_name, station_code, org_code, del_flag, create_by, create_time, update_by, update_time,sort_code
+    </sql>
+
+    <update id="putOnoffShow">
+        update from dz_work_station_management set on_off = #{onOff} where working_procedure_id = #{workingProcedureId}
+    </update>
+
+    <select id="getWorkingStation"
+            resultType="com.dzics.common.model.response.productiontask.station.ResWorkStation">
+        select * from (
+        SELECT
+        sta.working_procedure_id AS workingProcedureId,
+        sta.station_id AS stationId,
+        sta.station_code AS stationCode,
+        sta.station_name AS stationName,
+        sta.on_off AS onOff,
+        sta.ng_code as ngCode,
+        sta.out_flag as outFlag,
+        sta.merge_code as mergeCode,
+        sta.order_id as orderId,
+        sta.line_id as lineId,
+        sta.sort_code AS sortCode,
+        sta.dz_station_code as dzStationCode,
+        pro.work_code AS workcode,
+        pro.work_name AS workName,
+        ord.order_no as orderNo,
+        lin.line_no as lineNo,
+        lin.line_name AS lineName
+        FROM
+        `dz_work_station_management` AS sta
+        LEFT JOIN dz_working_procedure AS pro ON sta.working_procedure_id = pro.working_procedure_id
+        LEFT JOIN dz_order AS ord ON pro.order_id = ord.id
+        LEFT JOIN dz_production_line AS lin ON pro.line_id = lin.id
+        where 1=1
+        <if test="stationCode != null and stationCode != '' ">
+            AND sta.station_code LIKE concat('%',#{stationCode},'%')
+        </if>
+        <if test="workCode != null and workCode != '' ">
+            AND pro.work_code LIKE concat('%',#{workCode},'%')
+        </if>
+        <if test="orderId != null ">
+            AND ord.id = #{orderId}
+        </if>
+        <if test="lineId != null ">
+            AND lin.id = #{lineId}
+        </if>
+        ) as temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field} ${type}
+        </if>
+    </select>
+    <select id="getSortPosition"
+            resultType="com.dzics.common.model.response.productiontask.stationbg.StationModelAll">
+      SELECT
+            sta.station_id AS stationId,
+            sta.station_code AS stationCode,
+            sta.station_name AS stationName,
+            sta.sort_code AS sortCode,
+            sta.ng_code as ngCode,
+            sta.merge_code as mergeCode,
+            sta.out_flag as outFlag
+        FROM
+            `dz_work_station_management` AS sta
+        WHERE
+         order_id = #{orderId}
+        AND line_id = #{lineId}
+        AND  on_off = 1
+        ORDER BY
+            sort_code ASC
+    </select>
+
+    <select id="getWorkStationByLineId" resultType="com.dzics.common.model.response.workStation.GetWorkStationDo">
+    SELECT
+        line_id AS lineId,
+        station_id AS stationId,
+        station_name AS stationName
+    FROM
+        dz_work_station_management
+    WHERE
+        line_id = #{lineId}
+    </select>
+    <select id="getSortPositionOnOff" resultType="java.util.Map">
+            SELECT
+                station_name as colName,
+                station_id as stationId,
+                station_code as stationCode
+            FROM
+                `dz_work_station_management`
+            WHERE
+                order_id = #{orderId}
+            AND line_id = #{lineId}
+            AND on_off = #{onOff}
+            ORDER BY
+                sort_code ASC
+    </select>
+    <select id="getDzicsStationCode" resultType="com.dzics.common.model.response.mom.DzicsStationCode">
+        SELECT
+            station_id AS dzicsCodeId,
+            station_code AS dzStationCode
+        FROM
+            `dz_work_station_management`
+        WHERE
+            line_id = #{lineId}
+    </select>
+
+</mapper>

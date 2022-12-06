@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.MomOrderPathMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.MomOrderPath">
+        <id column="working_procedure_id" property="workingProcedureId" />
+        <result column="mom_order_id" property="momOrderId" />
+        <result column="OprSequenceNo" property="oprsequenceno" />
+        <result column="SequenceNo" property="sequenceno" />
+        <result column="OprSequenceName" property="oprsequencename" />
+        <result column="OprSequenceType" property="oprsequencetype" />
+        <result column="ScheduledStartDate" property="scheduledstartdate" />
+        <result column="ScheduledCompleteDate" property="scheduledcompletedate" />
+        <result column="WorkCenter" property="workcenter" />
+        <result column="WorkCenterName" property="workcentername" />
+        <result column="WorkStation" property="workstation" />
+        <result column="WorkStationName" property="workstationname" />
+        <result column="ProgressStatus" property="progressstatus" />
+        <result column="Quantity" property="quantity" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        working_procedure_id, mom_order_id, OprSequenceNo, SequenceNo, OprSequenceName, OprSequenceType, ScheduledStartDate, ScheduledCompleteDate, WorkCenter, WorkCenterName, WorkStation, WorkStationName, ProgressStatus, Quantity
+    </sql>
+
+</mapper>

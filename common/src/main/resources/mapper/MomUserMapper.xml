@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.MomUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.MomUser">
+        <id column="user_id" property="userId" />
+        <result column="login_order_no" property="loginOrderNo" />
+        <result column="login_line_no" property="loginLineNo" />
+        <result column="employee_no" property="employeeNo" />
+        <result column="employee_name" property="employeeName" />
+        <result column="emp_status" property="empStatus" />
+        <result column="paramRsrv1" property="paramrsrv1" />
+        <result column="paramRsrv2" property="paramrsrv2" />
+        <result column="paramRsrv3" property="paramrsrv3" />
+        <result column="login_state" property="loginState" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_id, login_order_no, login_line_no, employee_no, employee_name, emp_status, paramRsrv1, paramRsrv2, paramRsrv3, login_state, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+
+</mapper>

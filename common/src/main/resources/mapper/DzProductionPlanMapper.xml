@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzProductionPlanMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzProductionPlan">
+        <id column="id" property="id" />
+        <result column="line_id" property="lineId" />
+        <result column="plan_type" property="planType" />
+        <result column="planned_quantity" property="plannedQuantity" />
+        <result column="status" property="status" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, line_id, plan_type, planned_quantity, status, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+<!--    查询生产计划设置列表-->
+    <select id="list" resultType="com.dzics.common.model.response.plan.ProductionPlanDo" parameterType="com.dzics.common.model.request.plan.SelectProductionPlanVo">
+        select  * from (   select
+        plan.id as id,
+        line.line_name as lineName,
+        ord.order_no as orderNo,
+        dep.depart_name as departName,
+        plan.planned_quantity as plannedQuantity,
+        IFNULL(ditem.item_value,0) as dayClasses
+        from dz_production_plan as plan
+        left join dz_production_line as line on plan.line_id=line.id
+        left join dz_order as ord on line.order_id=ord.id
+        left join sys_depart as dep on ord.depart_id=dep.id
+        left join sys_dict_item as ditem on ('day_classes'=ditem.dict_code and line.id=ditem.item_text)
+        where plan.del_flag=0 and plan.plan_type=#{planType}
+        <if test="orgCode!=null">
+            and plan.org_code=#{orgCode}
+        </if>
+        <if test="departName!=null and departName!=''">
+            and dep.depart_name like concat('%',#{departName},'%')
+        </if>
+        <if test="orderNo!=null and orderNo!=''">
+            and ord.order_no like concat('%',#{orderNo},'%')
+        </if>
+        <if test="lineId!=null and lineId!=''">
+            and line.id =#{lineId}
+        </if>
+
+        ) as temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+
+</mapper>

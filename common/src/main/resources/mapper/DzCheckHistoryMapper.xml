@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzCheckHistoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzCheckHistory">
+        <id column="check_history_id" property="checkHistoryId" />
+        <result column="line_id" property="lineId" />
+        <result column="device_id" property="deviceId" />
+        <result column="check_type" property="checkType" />
+        <result column="username" property="username" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        check_history_id, line_id, device_id, check_type, username, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="getList" resultType="com.dzics.common.model.response.devicecheck.GetDeviceCheckDo">
+        select
+        his.check_history_id  as checkHistoryId,
+        line.line_name  as lineName,
+        line.id  as lineId,
+        eq.equipment_name  as equipmentName,
+        eq.equipment_no as equipmentNo,
+        his.check_number as checkNumber,
+        his.create_time as createTime,
+        his.create_by as createBy,
+        his.check_type as checkType
+        from dz_check_history his
+        left join dz_production_line line on his.line_id=line.id
+        left join dz_equipment eq on his.device_id=eq.id
+        <where>
+            <if test="lineId != null">
+                and line.id=#{lineId}
+            </if>
+            <if test="equipmentNo !=null and equipmentNo != ''">
+                and eq.equipment_no=#{equipmentNo}
+            </if>
+            <if test="checkNumber != null and checkNumber != ''">
+                and his.check_number=#{checkNumber}
+            </if>
+            <if test="checkType != null and checkType != ''">
+                and his.check_type=#{checkType}
+            </if>
+            <if test="startTime != null">
+                and his.create_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and his.create_time &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+
+</mapper>

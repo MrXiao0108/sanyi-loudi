@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzEquipmentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzEquipment">
+        <id column="id" property="id" />
+        <result column="signal_value" property="signalValue" />
+        <result column="line_id" property="lineId" />
+        <result column="order_no" property="orderNo" />
+        <result column="line_no" property="lineNo" />
+        <result column="equipment_no" property="equipmentNo" />
+        <result column="equipment_type" property="equipmentType" />
+        <result column="equipment_code" property="equipmentCode" />
+        <result column="equipment_name" property="equipmentName" />
+        <result column="nick_name" property="nickName" />
+        <result column="clear_count_status" property="clearCountStatus" />
+        <result column="clear_count_status_value" property="clearCountStatusValue" />
+        <result column="equipment_status" property="equipmentStatus" />
+        <result column="equipment_status_value" property="equipmentStatusValue" />
+        <result column="run_status" property="runStatus" />
+        <result column="run_status_value" property="runStatusValue" />
+        <result column="alarm_status" property="alarmStatus" />
+        <result column="alarm_status_vlaue" property="alarmStatusValue" />
+        <result column="connect_state" property="connectState" />
+        <result column="connect_state_value" property="connectStateValue" />
+        <result column="operator_mode" property="operatorMode" />
+        <result column="operator_mode_value" property="operatorModeValue" />
+        <result column="emergency_status" property="emergencyStatus" />
+        <result column="emergency_status_value" property="emergencyStatusValue" />
+        <result column="current_location" property="currentLocation" />
+        <result column="machining_time" property="machiningTime" />
+        <result column="speed_ratio" property="speedRatio" />
+        <result column="feed_speed" property="feedSpeed" />
+        <result column="speed_of_main_shaft" property="speedOfMainShaft" />
+        <result column="down_sum" property="downSum" />
+        <result column="down_time" property="downTime" />
+        <result column="start_run_time" property="startRunTime" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+        <result column="postscript" property="postscript" />
+        <result column="is_show" property="isShow" />
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="selectMap">
+        da.id,
+        da.device_id,
+        da.B814,
+        da.W101,
+        da.B401,
+        da.B402,
+        da.B403,
+        da.B404,
+        da.B405,
+        da.B406,
+        da.B501,
+        da.B502,
+        da.B503,
+        da.B504,
+        da.B505,
+        da.B521,
+        da.B522,
+        da.B523,
+        da.B524,
+        da.B525,
+        da.B526,
+        da.B527,
+        da.B541,
+        da.B542,
+        da.B543,
+        da.B544,
+        da.B545,
+        da.B546,
+        da.B550,
+        da.B551,
+        da.B552,
+        da.B553,
+        da.B554,
+        da.B555,
+        da.B556,
+        da.B557,
+        da.B561,
+        da.B562,
+        da.B563,
+        da.B564,
+        da.B565,
+        da.B566,
+        da.B567,
+        da.B568,
+        da.B569,
+        da.B570,
+        da.B571,
+        da.B572,
+        da.B591,
+        da.B592,
+        da.B593,
+        da.B594,
+        da.B595,
+        da.B596,
+        da.B597,
+        da.B651,
+        da.B691,
+        da.B692,
+        da.B693,
+        da.B694,
+        da.B801,
+        da.B802,
+        da.B803,
+        da.B804,
+        da.B805,
+        da.B806,
+        da.B807,
+        da.B808,
+        da.B809,
+        da.B810,
+        da.B811,
+        da.A148,
+        da.A501,
+        da.A502,
+        da.A503,
+        da.A504,
+        da.A521,
+        da.A541,
+        da.A561,
+        da.A562,
+        da.A563,
+        da.A564,
+        da.A565,
+        da.A566,
+        da.A567,
+        da.A591,
+        da.A592,
+        da.A593,
+        da.A594,
+        da.A595,
+        da.A620,
+        da.A801,
+        da.A802,
+        da.A803,
+        da.A804,
+        da.A805,
+        da.A806,
+        da.A807,
+        da.A808,
+        da.A809,
+        da.A810,
+        da.A811,
+        da.A812,
+        da.A813,
+        da.A814,
+        da.A815,
+        da.A816,
+        da.H561,
+        da.H562,
+        da.H563,
+        da.H564,
+        da.H565,
+        da.H566,
+        da.K561,
+        da.K562,
+        da.K563,
+        da.K564,
+        da.K565,
+        da.K566,
+        da.H706,
+        da.H707,
+        da.H801,
+        da.H802,
+        da.H803,
+        da.H804,
+        da.H805,
+        da.H806,
+        da.H807,
+        da.H901,
+        da.K801,
+        da.K802,
+        da.K803,
+        da.K804,
+        da.K901
+    </sql>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, signal_value, line_id, order_no, line_no, equipment_no, equipment_type, equipment_code, equipment_name, nick_name, clear_count_status, clear_count_status_value, equipment_status, equipment_status_value, run_status, run_status_value, alarm_status, alarm_status_vlaue, connect_state, connect_state_value, operator_mode, operator_mode_value, emergency_status, emergency_status_value, current_location, machining_time, speed_ratio, feed_speed, speed_of_main_shaft, down_sum, down_time, start_run_time, org_code, del_flag, create_by, create_time, update_by, update_time, postscript, is_show
+    </sql>
+    <update id="putEquipmentDataState">
+        update dz_equipment
+        set ${name}=#{value}
+        where id=#{id}
+    </update>
+
+
+    <select id="getById" resultType="com.dzics.common.model.response.EquipmentDo">
+        select eqm.*,
+        ord.id as orderId,
+        line.line_name as lineName,
+        ord.order_no as orderNo,
+        depart.depart_name as departName
+        from dz_equipment eqm
+        left join dz_production_line line on eqm.line_id=line.id
+        left join dz_order ord on line.order_id=ord.id
+        left join sys_depart depart on ord.depart_id=depart.id
+        where eqm.id=#{id}
+        and eqm.del_flag=0
+    </select>
+    <select id="listLingIdEquimentName" resultType="java.lang.String">
+        SELECT
+            equipment_name
+        FROM
+            `dz_equipment`
+        WHERE
+            line_id = #{lineId,jdbcType=BIGINT}
+        AND del_flag = 0
+    </select>
+    <select id="listjcjqr" resultType="com.dzics.common.model.response.JCEquiment">
+       SELECT
+            eq.equipment_no AS equipmentNo,
+            eq.equipment_type AS equipmentType,
+            eq.equipment_name AS equipmentName,
+            daysd.down_sum AS downSum,
+            eq.current_location AS currentLocation,
+            eq.operator_mode AS operatorMode,
+            eq.connect_state AS connectState,
+            eq.run_status AS runStatus,
+            eq.emergency_status AS emergencyStatus,
+            eq.alarm_status AS alarmStatus,
+            eq.line_no AS lineNo,
+            eq.order_no AS orderNo
+        FROM
+            dz_equipment AS eq
+        LEFT JOIN dz_day_shut_down_times AS daysd ON daysd.equipment_no = eq.equipment_no
+        AND daysd.equipment_type = eq.equipment_type
+        AND daysd.order_no = eq.order_no
+        AND daysd.line_no = eq.line_no
+        AND daysd.work_date = #{localDate}
+        WHERE
+            eq.equipment_type = 2
+        OR eq.equipment_type = 3
+    </select>
+    <select id="listjcjqrdeviceid" resultType="com.dzics.common.model.entity.DzEquipment">
+         SELECT
+            eq.equipment_no AS equipmentNo,
+            eq.equipment_type AS equipmentType,
+            eq.equipment_name AS equipmentName,
+            daysd.down_sum AS downSum,
+            eq.current_location AS currentLocation,
+            eq.operator_mode AS operatorMode,
+            eq.connect_state AS connectState,
+            eq.run_status AS runStatus,
+            eq.emergency_status AS emergencyStatus,
+            eq.alarm_status AS alarmStatus,
+            eq.line_no AS lineNo,
+            eq.order_no AS orderNo
+        FROM
+            dz_equipment AS eq
+        LEFT JOIN dz_day_shut_down_times AS daysd ON daysd.equipment_no = eq.equipment_no
+        AND daysd.equipment_type = eq.equipment_type
+        AND daysd.order_no = eq.order_no
+        AND daysd.line_no = eq.line_no
+        AND daysd.work_date = #{localDate}
+        WHERE
+           	eq.id = #{deviceId}
+    </select>
+
+    <select id="getMachiningMessageStatus" resultType="com.dzics.common.model.response.equipmentstate.DzDataCollectionDo">
+        SELECT
+            eq.id as equipmentId,
+            eq.equipment_type as equipmentType,
+            eq.equipment_no AS equipmentNo,
+            eq.equipment_name as equipmentName,
+            eq.head_position_ud as headPositionUd,
+            eq.head_position_lr as headPostionLr,
+            eq.movement_speed as movementSpeed,
+            eq.workpiece_speed as workpieceSpeed,
+            eq.coolant_temperature as coolantTemperature,
+            eq.coolant_pressure as coolantPressure,
+            eq.coolant_flow as coolantFlow,
+            eq.current_location AS currentLocation,
+            daysd.down_sum AS downSum,
+            <include refid="selectMap"></include>
+        FROM
+            dz_equipment AS eq
+        LEFT JOIN dz_data_collection AS da ON eq.id = da.device_id
+        LEFT JOIN dz_day_shut_down_times AS daysd ON daysd.equipment_no = eq.equipment_no
+        AND daysd.equipment_type = eq.equipment_type
+        AND daysd.order_no = eq.order_no
+        AND daysd.line_no = eq.line_no
+        AND daysd.work_date = #{now}
+        WHERE
+            eq.line_no = #{lineNo}
+        AND eq.order_no = #{orderNum}
+    </select>
+    <select id="equipmentList" resultType="com.dzics.common.model.response.EquipmentDo">
+        select  * from (  select
+        eqm.id as id,
+        eqm.equipment_no as equipmentNo,
+        eqm.equipment_code as equipmentCode,
+        eqm.equipment_name as equipmentName,
+        eqm.down_sum as downSum,
+        eqm.down_time as downTime,
+        line.id as lineId,
+        line.line_name as lineName,
+        ord.order_no as orderNo,
+        depart.depart_name as departName
+        from dz_equipment eqm
+        left join dz_production_line line on eqm.line_id=line.id
+        left join dz_order ord on line.order_id=ord.id
+        left join sys_depart depart on ord.depart_id=depart.id
+        where eqm.del_flag=0
+        <if test="equipmentType!=null and equipmentType>0">
+            and eqm.equipment_type=#{equipmentType}
+        </if>
+        <if test="useOrgCode!=null">
+            and eqm.org_code=#{useOrgCode}
+        </if>
+        <if test="orderNo!=null and orderNo!=''">
+            and ord.order_no like concat('%',#{orderNo},'%')
+        </if>
+        <if test="departName!=null and departName!=''">
+            and depart.depart_name like concat('%',#{departName},'%')
+        </if>
+        <if test="equipmentName!=null and equipmentName!=''">
+            and eqm.equipment_name like concat('%',#{equipmentName},'%')
+        </if>
+        <if test="lineId!=null ">
+            and line.id=#{lineId}
+        </if>
+        <if test="equipmentCode!=null and equipmentCode!=''">
+            and eqm.equipment_code like concat('%',#{equipmentCode},'%')
+        </if>
+        <if test="equipmentNo!=null and equipmentNo!=''">
+            and eqm.equipment_no like concat('%',#{equipmentNo},'%')
+        </if>
+
+        ) as temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+    <select id="getOrderLineEqId" resultType="com.dzics.common.model.response.EquimentOrderLineId">
+        SELECT
+            id,
+            equipment_no AS equipmentNo,
+            equipment_type AS equipmentType,
+            order_no AS orderNo,
+            line_no AS lineNo,
+            line_id AS lineId,
+            equipment_name as equipmentName
+        FROM
+            `dz_equipment`
+        WHERE
+            id in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    <select id="getByIds" resultType="com.dzics.common.model.response.DevcieNameId">
+       SELECT
+            equipment_name AS deviceName,
+            id AS deviceId
+        FROM
+            `dz_equipment`
+        WHERE
+            line_id = #{lineId,jdbcType=BIGINT}
+        AND standby_one = 1
+    </select>
+    <select id="getByOrderNoLineNo" resultType="java.lang.Long">
+        SELECT
+            id
+        FROM
+            `dz_equipment`
+        WHERE
+            order_no = #{orderNo}
+        AND line_no = #{lineNo}
+    </select>
+    <select id="list" resultType="com.dzics.common.model.response.EquipmentListDo">
+        select *
+        from (
+        select
+        eqm.id,
+        eqm.door_code as  doorCode,
+        eqm.signal_value as signalValue,
+        eqm.line_id as lineId,
+        eqm.equipment_no as equipmentNo,
+        eqm.equipment_type as equipmentType,
+        eqm.equipment_code as equipmentCode,
+        eqm.equipment_name as equipmentName,
+        eqm.nick_name as nickName,
+        eqm.clear_count_status as clearCountStatus,
+        eqm.clear_count_status_value as clearCountStatusValue,
+        eqm.equipment_status as equipmentStatus,
+        eqm.equipment_status_value as equipmentStatusValue,
+        eqm.run_status as runStatus,
+        eqm.run_status_value as runStatusValue,
+        eqm.alarm_status as alarmStatus,
+        eqm.alarm_status_vlaue as alarmStatusVlaue,
+        eqm.connect_state as connectState,
+        eqm.connect_state_value as connectStateValue,
+        eqm.operator_mode as operatorMode,
+        eqm.operator_mode_value as operatorModeValue,
+        eqm.emergency_status as emergencyStatus,
+        eqm.emergency_status_value as emergencyStatusValue,
+        eqm.current_location as currentLocation,
+        eqm.machining_time as machiningTime,
+        eqm.speed_ratio as speedRatio,
+        eqm.feed_speed as feedSpeed,
+        eqm.speed_of_main_shaft as speedOfMainShaft,
+        eqm.down_sum as downSum,
+        eqm.down_time as downTime,
+        eqm.start_run_time as startRunTime,
+        eqm.org_code as orgCode,
+        eqm.del_flag as delFlag,
+        eqm.create_by as createBy,
+        eqm.create_time as createTime,
+        eqm.update_by as updateBy,
+        eqm.update_time as updateTime,
+        eqm.postscript,
+        eqm.is_show as isShow,
+        line.line_name as lineName,
+        ord.order_no as orderNo,
+        colle.B561 as b561,
+        colle.B562 as b562,
+        colle.B565 as b565,
+        colle.A561 as a561,
+        colle.A563 as a563,
+        colle.A562 as a562,
+        colle.H561 as h561,
+        colle.H562 as h562,
+        colle.H566 as h566,
+        colle.K561 as k561,
+        colle.K562 as k562,
+        colle.K566 as k566,
+        IFNULL((SELECT sum(now_num)
+        from ${tableKey}
+        where equiment_id=eqm.id
+        ),0) as totalNum,
+        eqm.standardOperationRate as standardOperationRate
+        from dz_equipment eqm
+        left join dz_production_line line on eqm.line_id=line.id
+        left join dz_order ord on line.order_id=ord.id
+        left join dz_data_collection colle on eqm.id=colle.device_id
+        where eqm.del_flag=0
+        <if test="equipmentType!=null and equipmentType>0">
+            and eqm.equipment_type=#{equipmentType}
+        </if>
+        <if test="useOrgCode!=null">
+            and eqm.org_code=#{useOrgCode}
+        </if>
+        <if test="orderNo!=null and orderNo!=''">
+            and ord.order_no like concat('%',#{orderNo},'%')
+        </if>
+        <if test="departName!=null and departName!=''">
+            and depart.depart_name like concat('%',#{departName},'%')
+        </if>
+        <if test="equipmentName!=null and equipmentName!=''">
+            and eqm.equipment_name like concat('%',#{equipmentName},'%')
+        </if>
+        <if test=" lineId !=null and lineId!=''">
+            and eqm.line_id = #{lineId}
+        </if>
+        <if test="equipmentCode!=null and equipmentCode!=''">
+            and eqm.equipment_code like concat('%',#{equipmentCode},'%')
+        </if>
+        <if test="equipmentNo!=null and equipmentNo!=''">
+            and eqm.equipment_no like concat('%',#{equipmentNo},'%')
+        </if>
+        ) res
+        <if test="type!=null and type!=''">
+            order by
+            res.${field} ${type}
+        </if>
+    </select>
+    <select id="getDevcieLineId" resultType="com.dzics.common.model.response.device.DeviceMessage">
+        SELECT
+            id AS deviceId,
+            equipment_no AS equipmentNo,
+            equipment_type AS equipmentType,
+            equipment_code AS equipmentCode,
+            equipment_name AS equipmentName,
+	        nick_name AS nickName
+        FROM
+            dz_equipment AS eq
+        WHERE
+            eq.line_id = #{lineId,jdbcType=BIGINT}
+    </select>
+    <select id="getEquipmentState" resultType="com.dzics.common.model.response.EquipmentStateDo">
+        select
+        line.line_name as lineName,
+        eq.id as id,
+        eq.equipment_name as equipmentName,
+        eq.standby_one as standbyOne,
+        eq.standby_two as standbyTwo,
+        eq.standby_three as standbyThree,
+        eq.standby_four as standbyFour,
+        eq.standby_five as standbyFive,
+        eq.standby_six as standbySix,
+        eq.standby_seven as standbySeven
+        from dz_equipment eq
+        left join dz_production_line line on eq.line_id=line.id
+        <where>
+            <if test="lineId!=null and lineId!=''">
+                eq.line_id=#{lineId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

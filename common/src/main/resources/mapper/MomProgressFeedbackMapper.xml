@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.MomProgressFeedbackMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.MomProgressFeedback">
+        <id column="feedback_id" property="feedbackId" />
+        <result column="reqId" property="reqid" />
+        <result column="reqSys" property="reqsys" />
+        <result column="Facility" property="facility" />
+        <result column="WipOrderNo" property="wiporderno" />
+        <result column="SequenceNo" property="sequenceno" />
+        <result column="OprSequenceNo" property="oprsequenceno" />
+        <result column="WorkStation" property="workstation" />
+        <result column="ActualStartDate" property="actualstartdate" />
+        <result column="ActualCompleteDate" property="actualcompletedate" />
+        <result column="ProgressType" property="progresstype" />
+        <result column="ProductNo" property="productno" />
+        <result column="SerialNo" property="serialno" />
+        <result column="Quantity" property="quantity" />
+        <result column="NGQuantity" property="ngquantity" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        feedback_id, reqId, reqSys, Facility, WipOrderNo, SequenceNo, OprSequenceNo, WorkStation, ActualStartDate, ActualCompleteDate, ProgressType, ProductNo, SerialNo, Quantity, NGQuantity, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+
+</mapper>

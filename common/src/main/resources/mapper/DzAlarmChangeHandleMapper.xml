@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzAlarmChangeHandleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzAlarmChangeHandle">
+        <id column="change_id" property="changeId" />
+        <result column="key_sort" property="keySort" />
+        <result column="up_local_date" property="upLocalDate" />
+        <result column="detection_time" property="detectionTime" />
+        <result column="detection_date" property="detectionDate" />
+        <result column="detection_local_time" property="detectionLocalTime" />
+        <result column="equipment_type" property="equipmentType" />
+        <result column="order_no" property="orderNo" />
+        <result column="line_no" property="lineNo" />
+        <result column="equipment_no" property="equipmentNo" />
+        <result column="device_id" property="deviceId" />
+        <result column="work_state" property="workState" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        change_id, key_sort, up_local_date, detection_time, detection_date, detection_local_time, equipment_type, order_no, line_no, equipment_no, device_id, work_state, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+
+</mapper>

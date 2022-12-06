@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzRepairHistoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzRepairHistory">
+        <id column="repair_id" property="repairId" />
+        <result column="line_id" property="lineId" />
+        <result column="dievice_id" property="dieviceId" />
+        <result column="fault_type" property="faultType" />
+        <result column="start_handle_date" property="startHandleDate" />
+        <result column="complete_handle_date" property="completeHandleDate" />
+        <result column="remarks" property="remarks" />
+        <result column="username" property="username" />
+        <result column="org_code" property="orgCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        repair_id, line_id, dievice_id, fault_type, start_handle_date, complete_handle_date, remarks, username, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="getFaultRecordList" resultType="com.dzics.common.model.response.device.FaultRecord">
+        SELECT
+	      *
+        FROM
+            (
+                SELECT
+                    rep.repair_id AS repairId,
+                    rep.check_number AS checkNumber,
+                    rep.remarks,
+                    rep.start_handle_date AS startHandleDate,
+                    rep.complete_handle_date AS completeHandleDate,
+                    rep.fault_type AS faultType,
+                    rep.create_by AS createBy,
+                    rep.line_id AS lineId,
+                    lin.line_name AS lineName,
+                    eq.equipment_name AS equipmentName,
+                    eq.equipment_no AS equipmentNo,
+                    eq.id AS deviceId
+                FROM
+                    `dz_repair_history` AS rep
+                LEFT JOIN dz_production_line AS lin ON rep.line_id = lin.id
+                LEFT JOIN dz_equipment AS eq ON rep.dievice_id = eq.id
+                WHERE
+                 1=1
+                 <if test="checkNumber != null ">
+                     AND rep.check_number = #{checkNumber}
+                 </if>
+                <if test="lineId != null ">
+                    AND rep.line_id = #{lineId}
+                </if>
+                <if test="faultType != null ">
+                    AND rep.fault_type = #{faultType}
+                </if>
+                <if test="equipmentNo != null and equipmentNo != '' ">
+                    AND eq.equipment_no = #{equipmentNo}
+                </if>
+                <if test="startTime != null">
+                    and rep.create_time &gt;= #{startTime}
+                </if>
+                <if test="endTime != null">
+                    and rep.create_time &lt;= #{endTime}
+                </if>
+            ) temp
+            <if test="type != null and type != '' ">
+                ORDER BY
+                temp.${field}  ${type}
+            </if>
+    </select>
+    <select id="getFaultRecordDetails"
+            resultType="com.dzics.common.model.response.device.FaultRecordDetailsInner">
+        SELECT
+            repair_details_id as repairDetailsId,
+            fault_location AS faultLocation,
+            fault_description AS faultDescription
+        FROM
+            `dz_repair_history_details`
+        WHERE
+            repair_id = #{repairId}
+    </select>
+
+</mapper>

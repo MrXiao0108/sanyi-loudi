@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.mqtt.dao.DzDataDeviceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.mqtt.model.entity.DzDataDevice">
+        <id column="device_key" property="deviceKey" />
+        <result column="device_id" property="deviceId" />
+        <result column="company_code" property="companyCode" />
+        <result column="factory_code" property="factoryCode" />
+        <result column="device_name" property="deviceName" />
+        <result column="device_type" property="deviceType" />
+        <result column="device_type_code" property="deviceTypeCode" />
+        <result column="assets_encoding" property="assetsEncoding" />
+        <result column="system_product_name" property="systemProductName" />
+        <result column="equipment_id" property="equipmentId" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_inside" property="isInside" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        device_key, device_id, company_code, factory_code, device_name, device_type, device_type_code, assets_encoding, system_product_name, equipment_id, del_flag, create_by, create_time, update_by, update_time,is_inside
+    </sql>
+    <select id="getByType" resultType="com.dzics.mqtt.model.entity.DzDataDevice">
+        SELECT
+        device_key, device_id, company_code, factory_code, device_name, device_type, device_type_code, assets_encoding, system_product_name, equipment_id, device_type_def,is_inside
+         FROM `dz_data_device` WHERE device_type = #{ty}
+    </select>
+
+</mapper>

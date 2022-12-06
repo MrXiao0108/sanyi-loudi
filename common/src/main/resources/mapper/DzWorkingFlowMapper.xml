@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzWorkingFlowMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzWorkingFlow">
+        <id column="process_flow_id" property="processFlowId"/>
+        <result column="line_id" property="lineId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="working_procedure_id" property="workingProcedureId"/>
+        <result column="station_id" property="stationId"/>
+        <result column="pro_task_id" property="proTaskId"/>
+        <result column="qr_code" property="qrCode"/>
+        <result column="workpiece_code" property="workpieceCode"/>
+        <result column="start_time" property="startTime"/>
+        <result column="start_reporting_status" property="startReportingStatus"/>
+        <result column="start_reporting_frequency" property="startReportingFrequency"/>
+        <result column="complete_time" property="completeTime"/>
+        <result column="complete_reporting_status" property="completeReportingStatus"/>
+        <result column="complete_reporting_frequency" property="completeReportingFrequency"/>
+        <result column="remarks" property="remarks"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="work_date" property="workDate"/>
+        <result column="start_ropert_time" property="startRopertTime"/>
+        <result column="complete_ropert_time" property="completeRopertTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        process_flow_id, line_id, order_id, working_procedure_id, station_id, pro_task_id, qr_code, workpiece_code, start_time, start_reporting_status, start_reporting_frequency, complete_time, complete_reporting_status, complete_reporting_frequency, remarks, create_time, update_time, work_date
+    </sql>
+    <select id="getWorkingProcedureAndStation"
+            resultType="com.dzics.common.model.response.productiontask.ProcedureAndStation">
+        SELECT
+                stat.station_id AS stationId,
+                stat.station_name AS stationName,
+                stat.station_code AS stationCode,
+                pro.working_procedure_id AS workingProcedureId,
+                pro.sort_code AS sortCode,
+                pro.work_code AS workCode,
+                pro.work_name AS workName
+            FROM
+                `dz_work_station_management` AS stat
+            RIGHT JOIN dz_working_procedure AS pro ON stat.working_procedure_id = pro.working_procedure_id
+            ORDER BY pro.sort_code ASC
+    </select>
+    <select id="getWorkingFlow" resultType="com.dzics.common.model.response.productiontask.station.WorkingFlowRes">
+        SELECT
+        process_flow_id as processFlowId,
+        line_id as lineId,
+        order_id as orderId ,
+        working_procedure_id as workingProcedureId,
+        station_id as stationId,
+        pro_task_id as proTaskId,
+        qr_code as qrCode,
+        workpiece_code as workpieceCode ,
+        start_time as startTime,
+        complete_time as completeTime,
+        update_time as updateTime
+        FROM
+        `dz_working_flow`
+        WHERE
+        order_id = #{orderId}
+        AND line_id = #{lineId}
+        AND qr_code IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        ORDER BY create_time DESC
+    </select>
+    <select id="getWorkingFlowBigQrCode" resultType="java.lang.String">
+       SELECT
+            qr_code
+        FROM
+            `dz_working_flow_big`
+        where order_id = #{orderId}
+              and line_id = #{lineId}
+        <if test="startTime != null and startTime !='' ">
+            AND work_date &gt;=#{startTime}
+        </if>
+        <if test="endTime != null and endTime !='' ">
+            AND work_date &lt;=#{endTime}
+        </if>
+        ORDER BY
+        work_time DESC
+    </select>
+    <select id="getWorkingDetails" resultType="com.dzics.common.model.response.mom.GetWorkingDetailsDo">
+        SELECT
+        *
+        from (
+            SELECT
+                flo.start_time AS startTime,
+                flo.complete_time AS completeTime,
+                flo.start_ropert_time AS startRopertTime,
+                flo.complete_ropert_time AS completeRopertTime,
+                flo.start_reporting_status AS startReportingStatus,
+                flo.complete_reporting_status AS completeReportingStatus,
+                flo.workpiece_code AS workpieceCode,
+                flo.qr_code AS qrCode,
+                flo.pro_task_id AS proTaskId,
+                flo.work_date AS workDate,
+                sta.station_name AS stationName,
+                flo.station_id AS stationId,
+                mom.productAlias_productionLine AS productAliasProductionLine,
+                mom.ProductAlias AS productAlias,
+                flo.order_id AS orderId,
+                flo.line_id AS lineId,
+                lin.line_name AS lineName,
+                fbig.work_name as workName
+            FROM
+                dz_working_flow AS flo
+                JOIN (
+                    SELECT
+                        li.line_name,
+                        li.id
+                    FROM
+                         dz_production_line AS li
+                    WHERE 1=1
+                        <if test="lineId != null and lineId !='' ">
+                            AND li.id = #{lineId}
+                        </if>
+                ) AS lin ON flo.line_id = lin.id
+                JOIN (
+                    SELECT
+                        staol.station_id,
+                        staol.station_name
+                    FROM
+                        dz_work_station_management AS staol
+                    WHERE
+                    1 = 1
+                    <if test="lineId != null and lineId !='' ">
+                        AND staol.line_id = #{lineId}
+                    </if>
+                    AND staol.on_off = 1
+                ) AS sta ON sta.station_id = flo.station_id
+                JOIN dz_working_flow_big AS fbig ON flo.qr_code = fbig.qr_code AND flo.line_id = fbig.line_id
+                JOIN mom_order AS mom ON flo.pro_task_id = mom.pro_task_order_id
+                <if test="workDate != null and workDate!='' ">
+                    AND flo.work_date >= #{workDate}
+                </if>
+                <if test="workStartTIme != null and workStartTIme!='' ">
+                    AND flo.start_time >= #{workStartTIme}
+                </if>
+                <if test="workEndTIme != null and workEndTIme!='' ">
+                    AND flo.complete_time &lt;= #{workEndTIme}
+                </if>
+                <if test="startTime != null and startTime !='' ">
+                    AND flo.start_ropert_time &gt;=#{startTime}
+                </if>
+                <if test="endTime != null and endTime !='' ">
+                    AND flo.start_ropert_time &lt;=#{endTime}
+                </if>
+                <if test="lineId != null and lineId !='' ">
+                    AND flo.line_id = #{lineId}
+                </if>
+                <if test="workpieceCode != null and workpieceCode != '' ">
+                    AND flo.workpiece_code = #{workpieceCode}
+                </if>
+                <if test="qrCode != null and qrCode !=''">
+                    AND flo.qr_code = #{qrCode}
+                </if>
+                <if test="stationId !=null and stationId !='' ">
+                    AND flo.station_id = #{stationId}
+                </if>
+                <if test="workName != null and  workName !='' ">
+                    AND fbig.work_name = #{workName,jdbcType=VARCHAR}
+                </if>
+        ) as res
+        <if test="type!=null and type!=''">
+            order by  res.${field} ${type}
+        </if>
+    </select>
+
+</mapper>

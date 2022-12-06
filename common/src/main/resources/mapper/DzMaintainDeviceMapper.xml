@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzics.common.dao.DzMaintainDeviceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dzics.common.model.entity.DzMaintainDevice">
+        <id column="maintain_id" property="maintainId"/>
+        <result column="device_id" property="deviceId"/>
+        <result column="date_of_production" property="dateOfProduction"/>
+        <result column="maintain_date_before" property="maintainDateBefore"/>
+        <result column="maintain_date_after" property="maintainDateAfter"/>
+        <result column="unit" property="unit"/>
+        <result column="org_code" property="orgCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        maintain_id, device_id, date_of_production, maintain_date_before, maintain_date_after, unit, org_code, del_flag, create_by, create_time, update_by, update_time
+    </sql>
+    <select id="getMaintainList" resultType="com.dzics.common.model.response.device.maintain.MaintainDevice">
+        SELECT
+            *
+        FROM
+            (
+                SELECT
+                    lin.line_name AS lineName,
+                    eq.equipment_name AS equipmentName,
+                    eq.equipment_no AS equipmentNo,
+                    ma.device_id as deviceId,
+                    ma.line_id as lineId,
+                    ma.date_of_production AS dateOfProduction,
+                    ma.maintain_date_before AS maintainDateBefore,
+                    ma.maintain_date_after AS maintainDateAfter,
+                    CONCAT(
+                    ma.multiple,
+                    ma.unit,
+                    '/次'
+                    ) AS concatUnit,
+                    ma.multiple,
+                    ma.unit,
+                    ma.frequency,
+                    ma.maintain_id AS maintainId
+                FROM
+                    `dz_maintain_device` AS ma
+                LEFT JOIN dz_production_line AS lin ON ma.line_id = lin.id
+                LEFT JOIN dz_equipment AS eq ON ma.device_id = eq.id
+                WHERE
+                   1=1
+                <if test="lineId != null ">
+                    AND ma.line_id = #{lineId}
+                </if>
+                 <if test="equipmentNo != null and equipmentNo !='' ">
+                     AND eq.equipment_no = #{equipmentNo}
+                 </if>
+                <if test="startTime != null ">
+                    AND ma.maintain_date_after &gt;= #{startTime}
+                </if>
+                <if test="endTime != null ">
+                    AND ma.maintain_date_after &lt;= #{endTime}
+                </if>
+
+            ) temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+    <select id="getMaintainListWait"
+            resultType="com.dzics.common.model.response.device.maintain.MaintainDevice">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        lin.line_name AS lineName,
+        eq.equipment_name AS equipmentName,
+        eq.equipment_no AS equipmentNo,
+        ma.device_id as deviceId,
+        ma.line_id as lineId,
+        ma.date_of_production AS dateOfProduction,
+        ma.maintain_date_before AS maintainDateBefore,
+        ma.maintain_date_after AS maintainDateAfter,
+        CONCAT(
+        ma.multiple,
+        ma.unit,
+        '/次'
+        ) AS concatUnit,
+        ma.multiple,
+        ma.unit,
+        ma.frequency,
+        ma.maintain_id AS maintainId
+        FROM
+        `dz_maintain_device` AS ma
+        LEFT JOIN dz_production_line AS lin ON ma.line_id = lin.id
+        LEFT JOIN dz_equipment AS eq ON ma.device_id = eq.id
+        WHERE
+        AND ma.maintain_date_after &gt; #{now}
+        <if test="lineId != null ">
+            AND ma.line_id = #{lineId}
+        </if>
+        <if test="equipmentNo != null and equipmentNo !='' ">
+            AND eq.equipment_no = #{equipmentNo}
+        </if>
+        <if test="startTime != null ">
+            AND ma.maintain_date_after &gt;= #{startTime}
+        </if>
+        <if test="endTime != null ">
+            AND ma.maintain_date_after &lt;= #{endTime}
+        </if>
+
+        ) temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+    <select id="getMaintainListOver"
+            resultType="com.dzics.common.model.response.device.maintain.MaintainDevice">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        lin.line_name AS lineName,
+        eq.equipment_name AS equipmentName,
+        eq.equipment_no AS equipmentNo,
+        ma.device_id as deviceId,
+        ma.line_id as lineId,
+        ma.date_of_production AS dateOfProduction,
+        ma.maintain_date_before AS maintainDateBefore,
+        ma.maintain_date_after AS maintainDateAfter,
+        CONCAT(
+        ma.multiple,
+        ma.unit,
+        '/次'
+        ) AS concatUnit,
+        ma.multiple,
+        ma.unit,
+        ma.frequency,
+        ma.maintain_id AS maintainId
+        FROM
+        `dz_maintain_device` AS ma
+        LEFT JOIN dz_production_line AS lin ON ma.line_id = lin.id
+        LEFT JOIN dz_equipment AS eq ON ma.device_id = eq.id
+        WHERE
+        AND ma.maintain_date_after &lt; #{now}
+        <if test="lineId != null ">
+            AND ma.line_id = #{lineId}
+        </if>
+        <if test="equipmentNo != null and equipmentNo !='' ">
+            AND eq.equipment_no = #{equipmentNo}
+        </if>
+        <if test="startTime != null ">
+            AND ma.maintain_date_after &gt;= #{startTime}
+        </if>
+        <if test="endTime != null ">
+            AND ma.maintain_date_after &lt;= #{endTime}
+        </if>
+
+        ) temp
+        <if test="type != null and type != '' ">
+            ORDER BY
+            temp.${field}  ${type}
+        </if>
+    </select>
+    <select id="getMaintainRecord" resultType="com.dzics.common.model.response.device.maintain.MaintainRecord">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        ma.maintain_history_id AS maintainHistoryId,
+        ma.maintain_date AS maintainDate,
+        lin.line_name AS lineName,
+        eq.equipment_name AS equipmentName,
+        eq.equipment_no AS equipmentNo,
+        ma.create_by AS createBy
+        FROM
+        `dz_maintain_device_history` AS ma
+        LEFT JOIN dz_maintain_device AS de ON ma.maintain_id = de.maintain_id
+        LEFT JOIN dz_production_line AS lin ON de.line_id = lin.id
+        LEFT JOIN dz_equipment AS eq ON de.device_id = eq.id
+        WHERE
+        ma.maintain_id = #{maintainId}
+        <if test="createBy != null and createBy !='' ">
+            AND ma.create_by = #{createBy}
+        </if>
+        <if test="startTime != null ">
+            AND ma.maintain_date &gt;= #{startTime}
+        </if>
+
+         <if test="endTime != null ">
+             AND ma.maintain_date &lt;= #{endTime}
+         </if>
+        ) AS temp
+    </select>
+    <select id="getMaintainRecordDetails"
+            resultType="com.dzics.common.model.response.device.maintain.MaintainRecordDetails">
+        SELECT
+            maintain_item AS maintainItem,
+            maintain_content AS maintainContent
+        FROM
+            `dz_maintain_device_history_details`
+        WHERE
+            maintain_history_id = #{maintainHistoryId}
+    </select>
+
+</mapper>
