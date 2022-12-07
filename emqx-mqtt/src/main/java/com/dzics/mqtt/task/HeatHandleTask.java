@@ -96,10 +96,13 @@ public class HeatHandleTask {
                             }
                         }
                     }
-
-
-
-
+                    //判断当前淬火机的状态是否为告警
+                    if(workStateDef == 3){
+                        //状态变更为待料状态
+                        workStateDef = 2;
+                        //告警重置
+                        alram = String.valueOf(0);
+                    }
                     Map<String, Object> mps1 = new HashMap<>();
                     mps1.put("Status", workStateDef);
                     mps1.put("ts", timeMillis);
