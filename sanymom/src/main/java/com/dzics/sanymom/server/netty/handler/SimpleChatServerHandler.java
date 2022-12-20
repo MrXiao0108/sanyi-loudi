@@ -162,7 +162,6 @@ public class SimpleChatServerHandler extends ChannelInboundHandlerAdapter {
                         qrCode = qrCode.split("_")[1];
                     }
                 }
-
                 //获取mom订单的产品型号  判断当前二维码前缀与订单产品类型是否一致
                 String productAlias = list.get(0).getProductAlias();
                 //转换产品类型为字节
@@ -259,20 +258,20 @@ public class SimpleChatServerHandler extends ChannelInboundHandlerAdapter {
                 log.info("SimpleChatServerHandler [channelRead] 机器人：返回报工信号 {}",res);
                 return;
             }
-//            else if("Polish".equals(code)){
-//                String qrCode;
-//                if(split[1].contains("_")){
-//                    qrCode = split[1].split("_")[1];
-//                }else{
-//                    qrCode = split[1];
-//                }
-//                Object o = redisUtil.get(RedisKey.Get_Polish_QrCode + line.getOrderNo());
-//                //如果缓存中为空，或者缓存中和最新的数据不匹配，则更新最新缓存值
-//                if(StringUtils.isEmpty(o) || !qrCode.equals(String.valueOf(o))){
-//                    redisUtil.set(RedisKey.Get_Polish_QrCode+line.getOrderNo(),qrCode);
-//                }
-//                log.info("接收到当前人工打磨台2最新检测产品二维码为："+qrCode);
-//            }
+            else if("Polish".equals(code)){
+                String qrCode;
+                if(split[1].contains("_")){
+                    qrCode = split[1].split("_")[1];
+                }else{
+                    qrCode = split[1];
+                }
+                Object o = redisUtil.get(RedisKey.Get_Polish_QrCode + line.getOrderNo());
+                //如果缓存中为空，或者缓存中和最新的数据不匹配，则更新最新缓存值
+                if(StringUtils.isEmpty(o) || !qrCode.equals(String.valueOf(o))){
+                    redisUtil.set(RedisKey.Get_Polish_QrCode+line.getOrderNo(),qrCode);
+                }
+                log.info("接收到当前人工打磨台2最新检测产品二维码为："+qrCode);
+            }
             else {
                 //{"ip":"192.168.16.100","lineNo":"2","message":"1","orderNo":"DZ-1819","port":1,"receiveDataSource":"ROB","sourceIp":"192.168.10.100","type":"1"}
                 String ipPort = ctx.channel().remoteAddress().toString().replace("/", "");

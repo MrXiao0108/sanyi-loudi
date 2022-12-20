@@ -353,7 +353,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1871.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1871(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1871);
         boolean flag = true;
         try {
@@ -379,7 +378,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1872.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1872(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1872);
         boolean flag = true;
         try {
@@ -405,10 +403,8 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1873.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1873(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1873);
         boolean flag = true;
-
         try {
             log.info("处理报工数据队列: {}, 数据 : {}", positionQuery1873, msg);
             lock.lock();
@@ -432,7 +428,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1874.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1874(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1874);
         boolean flag = true;
         try {
@@ -458,7 +453,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1875.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1875(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1875);
         boolean flag = true;
         try {
@@ -484,7 +478,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1876.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1876(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1876);
         boolean flag = true;
         try {
@@ -510,7 +503,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1877.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1877(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1877);
         boolean flag = true;
         try {
@@ -536,7 +528,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1878.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1878(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1878);
         boolean flag = true;
         try {
@@ -562,7 +553,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1879.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1879(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1879);
         boolean flag = true;
         try {
@@ -588,7 +578,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1880.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1880(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1880);
         boolean flag = true;
         try {
@@ -614,7 +603,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1887.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1887(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1887);
         boolean flag = true;
         try {
@@ -640,7 +628,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1888.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1888(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1888);
         boolean flag = true;
         try {
@@ -666,7 +653,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1889.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1889(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1889);
         boolean flag = true;
         try {
@@ -692,7 +678,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1890.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1890(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1890);
         boolean flag = true;
         try {
@@ -718,7 +703,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1891.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1891(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1891);
         boolean flag = true;
         try {
@@ -744,7 +728,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1955.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1955(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1955);
         boolean flag = true;
         try {
@@ -770,7 +753,6 @@ public class ProductPositionCousomer {
 
     @RabbitListener(queues = "${accq.1956.inner.product.position.query}", containerFactory = "localContainerFactory")
     public void processingWorkReportData1956(@Payload String msg, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws Throwable {
-//        RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_113);
         RLock lock = redissonClient.getLock(RedisPrefxKey.DZ_LOCK_DATA_MOM_DZ_1956);
         boolean flag = true;
         try {

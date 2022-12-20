@@ -123,12 +123,6 @@ public class MomOrderAgvServiceImpl implements MomOrderAgvService {
                 log.info("机器人上发二维码绑定订单指令:{}", (Object) split);
                 try {
                     if (value.contains("_")) {
-//                        String[] s = value.split("_");
-//                        if (s.length == 2) {
-//                            value = s[1];
-//                        } else {
-//                            log.error("处理二维码绑定订单错误 订单：{},产线:{} ,code: {}", orderNo, lineNo, value);
-//                        }
                         int index = value.indexOf("_") + 1;
                         value = value.substring(index,value.length());
                     }

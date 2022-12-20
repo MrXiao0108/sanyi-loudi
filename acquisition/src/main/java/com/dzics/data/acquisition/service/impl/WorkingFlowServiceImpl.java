@@ -180,12 +180,6 @@ public class WorkingFlowServiceImpl implements WorkingFlowService {
                     String qrcode = check[1];
                     try {
                         if (qrcode.contains("_")) {
-//                            String[] s = qrcode.split("_");
-//                            if (s.length == 2) {
-//                                qrcode = s[1];
-//                            } else {
-//                                log.error("处理二维码绑定订单错误 订单：{},产线:{} ,code: {}", orderCode, lineNo, qrcode);
-//                            }
                             int index = qrcode.indexOf("_") + 1;
                             qrcode = qrcode.substring(index,qrcode.length());
                         }
@@ -194,15 +188,17 @@ public class WorkingFlowServiceImpl implements WorkingFlowService {
                     }
                     MonOrder orderQrCode = cacheService.getMomOrderNoProducBarcode(qrcode, orderCode, lineNo);
                     if (orderQrCode == null) {
-//                    绑定二维码,增加生成数量,获取当前生产报工中的订单
-                        MonOrder startOrder = momOrderService.getMomOrder(orderCode, lineNo, MomProgressStatus.LOADING);
-                        if (startOrder != null) {
-                            Integer sum = accOrderQrCodeService.bandMomOrderQrCode(qrcode, startOrder, orderCode, lineNo);
-                            momOrderAgvService.updateOrderStateSum(DzUdpType.UDP_CMD_CONTROL_SUM, "", orderCode, lineNo, startOrder, sum);
-                        } else {
-                            log.warn("处理报工数据: 二维码绑定订单时MOM生产订单不存在,订单：{},产线：{},订单状态：{},startOrder: {}", orderCode, lineNo, MomProgressStatus.LOADING, startOrder);
-                            throw new BindQrCodeException(CustomExceptionType.TOKEN_PERRMITRE_ERROR, orderCode + ": 当前生产订单不存在");
-                        }
+                        log.error("处理报工数据: 识别到当前二维码：{}为异常件，未经过1202信号处理，数据库中不存在当前二维码记录，不做处理",qrcode);
+                        throw new BindQrCodeException(CustomExceptionType.SYSTEM_ERROR, "当前二维码："+qrcode + "为异常件，未经过1202信号处理，数据库中不存在当前二维码记录，不做处理");
+//                        //绑定二维码,增加生成数量,获取当前生产报工中的订单
+//                        MonOrder startOrder = momOrderService.getMomOrder(orderCode, lineNo, MomProgressStatus.LOADING);
+//                        if (startOrder != null) {
+//                            Integer sum = accOrderQrCodeService.bandMomOrderQrCode(qrcode, startOrder, orderCode, lineNo);
+//                            momOrderAgvService.updateOrderStateSum(DzUdpType.UDP_CMD_CONTROL_SUM, "", orderCode, lineNo, startOrder, sum);
+//                        } else {
+//                            log.warn("处理报工数据: 二维码绑定订单时MOM生产订单不存在,订单：{},产线：{},订单状态：{},startOrder: {}", orderCode, lineNo, MomProgressStatus.LOADING, startOrder);
+//                            throw new BindQrCodeException(CustomExceptionType.TOKEN_PERRMITRE_ERROR, orderCode + ": 当前生产订单不存在");
+//                        }
                     }
 //                    生成工序
                     ReqWorkQrCodeOrder qrCodeOrder = workFlow(line, workStation, timestamp, qrcode, outInputType, rabbitmqMessage.getDeviceCode(), workStationSpare);
@@ -213,7 +209,6 @@ public class WorkingFlowServiceImpl implements WorkingFlowService {
                     return qrCodeOrder;
                 }
             }
-
         }
         return null;
 

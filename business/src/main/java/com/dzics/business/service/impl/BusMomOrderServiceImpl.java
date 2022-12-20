@@ -262,14 +262,13 @@ public class BusMomOrderServiceImpl implements BusMomOrderService {
             return new Result(CustomExceptionType.TOKEN_PERRMITRE_ERROR, Message.ERR_33);
         }
         if (monOrder1.getOrderOperationResult().intValue() == 1) {
-            log.warn("订单上个操作未完成，不允许强制关闭:{}", putMomOrder);
             return new Result(CustomExceptionType.TOKEN_PERRMITRE_ERROR, Message.ERR_126);
         }
         //强制关闭指定订单
         MonOrder monOrder = new MonOrder();
         monOrder.setProTaskOrderId(putMomOrder.getProTaskOrderId());
         monOrder.setProgressStatus(putMomOrder.getProgressStatus());
-        monOrder.setOrderOperationResult(1);//操作进行中
+        monOrder.setOrderOperationResult(1);
         boolean b = momOrderService.updateById(monOrder);
         sendControCmdRob(putMomOrder.getProTaskOrderId(), DzUdpType.CONTROL_STOP);
         return Result.OK(b);

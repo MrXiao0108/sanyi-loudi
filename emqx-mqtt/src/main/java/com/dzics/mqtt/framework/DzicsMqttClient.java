@@ -80,7 +80,6 @@ public class DzicsMqttClient {
                 client.connect(conOpt);
                 Thread.sleep(10000);
             }
-
         } catch (Throwable e) {
             log.error("mqtt客户端:{} 连接异常：{}", configMqtt.getClientId(), e.getMessage(), e);
             throw e;
