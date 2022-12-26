@@ -62,17 +62,6 @@ public class LogController {
         return busiOperationLog.queryOperLog(pageLimit, sub, code, sysOperationLoggingVo);
     }
 
-//    @OperLog(operModul = "日志管理", operType = OperType.DEL, operDesc = "刪除操作日志", operatorType = "后台")
-//    @ApiOperation(value = "刪除操作日志", consumes = MediaType.APPLICATION_JSON_VALUE)
-//    @ApiOperationSupport(author = "jq", order = 112)
-//    @DeleteMapping("/delOperLog")
-//    public Result delOperLog(
-//            @RequestBody List<Integer> ids,
-//            @RequestHeader(value = "jwt_token", required = false) @ApiParam(value = "token令牌", required = true) String tokenHdaer,
-//            @RequestHeader(value = "sub", required = false) @ApiParam(value = "用户账号", required = true) String sub) {
-//        return busiOperationLog.delOperLog(ids);
-//    }
-
     @OperLog(operModul = "日志管理", operType = OperType.QUERY, operDesc = "登录日志", operatorType = "后台")
     @ApiOperation(value = "登录日志", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperationSupport(author = "NeverEnd", order = 111)
@@ -84,17 +73,6 @@ public class LogController {
             @RequestHeader(value = "code", required = false) @ApiParam(value = "用户账号", required = true) String code) {
         return loginLogService.queryLogin(pageLimit, sysloginVo, sub, code);
     }
-
-//    @OperLog(operModul = "日志管理", operType = OperType.DEL, operDesc = "刪除登录日志", operatorType = "后台")
-//    @ApiOperation(value = "刪除登录日志", consumes = MediaType.APPLICATION_JSON_VALUE)
-//    @ApiOperationSupport(author = "jq", order = 112)
-//    @DeleteMapping("/delLoginLog")
-//    public Result delLoginLog(
-//            @RequestBody List<Integer> ids,
-//            @RequestHeader(value = "jwt_token", required = false) @ApiParam(value = "token令牌", required = true) String tokenHdaer,
-//            @RequestHeader(value = "sub", required = false) @ApiParam(value = "用户账号", required = true) String sub) {
-//        return loginLogService.delLoginLog(ids);
-//    }
 
     @ApiOperation(value = "通信日志", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperationSupport(author = "NeverEnd", order = 112)
